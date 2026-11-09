@@ -6,7 +6,7 @@ const LOCAL_CHAIN_ID = 31337;
 const ALFAJORES_CHAIN_ID = 44787;
 const CELO_CHAIN_ID = 42220;
 
-describe("PetChainRegistry invariants", function () {
+describe("HealthyLabRegistry invariants", function () {
   let Factory, registry, admin, owner, other, vet;
 
   async function registerPet(signer = owner) {
@@ -17,7 +17,7 @@ describe("PetChainRegistry invariants", function () {
 
   beforeEach(async function () {
     [admin, owner, other, vet] = await ethers.getSigners();
-    Factory = await ethers.getContractFactory("PetChainRegistry");
+    Factory = await ethers.getContractFactory("HealthyLabRegistry");
     registry = await Factory.deploy(admin.address, network.config.chainId);
   });
 
@@ -34,19 +34,19 @@ describe("PetChainRegistry invariants", function () {
     it("accepts an admin other than the deployer", async function () {
       const r = await Factory.deploy(owner.address, LOCAL_CHAIN_ID);
       expect(await r.admin()).to.equal(owner.address);
-      await expect(r.connect(admin).pause()).to.be.revertedWith("PetChainRegistry: not admin");
+      await expect(r.connect(admin).pause()).to.be.revertedWith("HealthyLabRegistry: not admin");
       await r.connect(owner).pause();
     });
 
     it("reverts on a zero admin", async function () {
       await expect(Factory.deploy(ethers.ZeroAddress, LOCAL_CHAIN_ID))
-        .to.be.revertedWith("PetChainRegistry: zero admin");
+        .to.be.revertedWith("HealthyLabRegistry: zero admin");
     });
 
     for (const chainId of [ALFAJORES_CHAIN_ID, CELO_CHAIN_ID, 1, 0]) {
       it(`reverts when targeting chain ${chainId} from the local chain`, async function () {
         await expect(Factory.deploy(admin.address, chainId))
-          .to.be.revertedWith("PetChainRegistry: wrong chain");
+          .to.be.revertedWith("HealthyLabRegistry: wrong chain");
       });
     }
 
@@ -104,7 +104,7 @@ describe("PetChainRegistry invariants", function () {
       const b = await registerPet();
       await registry.connect(owner).deactivatePet(a);
       await expect(registry.connect(owner).deactivatePet(a))
-        .to.be.revertedWith("PetChainRegistry: already inactive");
+        .to.be.revertedWith("HealthyLabRegistry: already inactive");
       expect(await registry.getPetsByOwner(owner.address)).to.deep.equal([b]);
     });
 
@@ -125,8 +125,8 @@ describe("PetChainRegistry invariants", function () {
   // Issue #1325 — identifier normalization fuzzing
   // ---------------------------------------------------------------------------
   describe("#1325 — identifier normalization", function () {
-    const INVALID_CHAR = "PetChainRegistry: invalid identifier character";
-    const INVALID_LEN = "PetChainRegistry: invalid identifier length";
+    const INVALID_CHAR = "HealthyLabRegistry: invalid identifier character";
+    const INVALID_LEN = "HealthyLabRegistry: invalid identifier length";
 
     // Reference model of the on-chain rules.
     function reference(id) {
@@ -188,7 +188,7 @@ describe("PetChainRegistry invariants", function () {
           expect(await registry.normalizeIdentifier(variant)).to.equal(id);
           await registry.connect(vet).registerVet(id, "GP");
           await expect(registry.connect(other).registerVet(variant, "GP"))
-            .to.be.revertedWith("PetChainRegistry: license already registered");
+            .to.be.revertedWith("HealthyLabRegistry: license already registered");
         }
       ), { numRuns: 25, seed: 1325 });
     });
@@ -229,18 +229,18 @@ describe("PetChainRegistry invariants", function () {
     }
 
     const failures = [
-      ["non-owner caller", "PetChainRegistry: not pet owner", async id => [other, id, other.address]],
-      ["nonexistent pet", "PetChainRegistry: not pet owner", async () => [owner, 999, other.address]],
+      ["non-owner caller", "HealthyLabRegistry: not pet owner", async id => [other, id, other.address]],
+      ["nonexistent pet", "HealthyLabRegistry: not pet owner", async () => [owner, 999, other.address]],
       ["paused registry", "EnforcedPause", async id => {
         await registry.connect(admin).pause();
         return [owner, id, other.address];
       }],
-      ["zero address recipient", "PetChainRegistry: zero address", async id => [owner, id, ethers.ZeroAddress]],
-      ["inactive pet", "PetChainRegistry: pet inactive", async id => {
+      ["zero address recipient", "HealthyLabRegistry: zero address", async id => [owner, id, ethers.ZeroAddress]],
+      ["inactive pet", "HealthyLabRegistry: pet inactive", async id => {
         await registry.connect(owner).deactivatePet(id);
         return [owner, id, other.address];
       }],
-      ["self transfer", "PetChainRegistry: self transfer", async id => [owner, id, owner.address]],
+      ["self transfer", "HealthyLabRegistry: self transfer", async id => [owner, id, owner.address]],
     ];
 
     for (const [name, reason, arrange] of failures) {
@@ -276,7 +276,7 @@ describe("PetChainRegistry invariants", function () {
       expect(after.otherPets).to.deep.equal([Number(petId)]);
       expect(after.transfers).to.equal(before.transfers + 1);
       await expect(registry.connect(owner).transferPet(petId, owner.address))
-        .to.be.revertedWith("PetChainRegistry: not pet owner");
+        .to.be.revertedWith("HealthyLabRegistry: not pet owner");
     });
   });
 });

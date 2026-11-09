@@ -7,7 +7,7 @@
  },
  "enums": [
   {
-   "contract": "petchain",
+   "contract": "healthy-lab",
    "source": "src/lib.rs",
    "enum": "ContractError",
    "retired": [],
@@ -129,9 +129,9 @@
    ]
   },
   {
-   "contract": "petchain",
+   "contract": "healthy-lab",
    "source": "src/lib.rs",
-   "enum": "PetChainError",
+   "enum": "HealthyLabError",
    "retired": [],
    "errors": [
     { "code": 1, "name": "NonceReused", "retry": "after_state_change" },

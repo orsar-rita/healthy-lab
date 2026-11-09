@@ -19,7 +19,7 @@
 // ============================================================
 
 use crate::{
-    AccessGrant, AccessLevel, DataKey, Gender, PetChainContract, PetChainContractClient,
+    AccessGrant, AccessLevel, DataKey, Gender, HealthyLabContract, HealthyLabContractClient,
     PrivacyLevel, Species,
 };
 use soroban_sdk::{
@@ -27,14 +27,14 @@ use soroban_sdk::{
     Address, Env, String, Vec,
 };
 
-fn setup(env: &Env) -> (PetChainContractClient<'static>, Address) {
+fn setup(env: &Env) -> (HealthyLabContractClient<'static>, Address) {
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(env, &contract_id);
     (client, contract_id)
 }
 
-fn register_pet(client: &PetChainContractClient, env: &Env, owner: &Address) -> u64 {
+fn register_pet(client: &HealthyLabContractClient, env: &Env, owner: &Address) -> u64 {
     client.register_pet(
         owner,
         &String::from_str(env, "Grantee"),
@@ -137,13 +137,13 @@ fn test_revoked_grant_cannot_authorize_access() {
     let grantee = Address::generate(&env);
     client.grant_access(&pet_id, &grantee, &AccessLevel::Full, &None, &0u64);
     assert_eq!(
-        PetChainContract::check_access(env.clone(), pet_id, grantee.clone()),
+        HealthyLabContract::check_access(env.clone(), pet_id, grantee.clone()),
         AccessLevel::Full
     );
 
     client.revoke_access(&pet_id, &grantee);
     assert_eq!(
-        PetChainContract::check_access(env.clone(), pet_id, grantee),
+        HealthyLabContract::check_access(env.clone(), pet_id, grantee),
         AccessLevel::None
     );
 }
@@ -167,13 +167,13 @@ fn test_expired_grant_cannot_authorize_access() {
         &0u64,
     );
     assert_eq!(
-        PetChainContract::check_access(env.clone(), pet_id, grantee.clone()),
+        HealthyLabContract::check_access(env.clone(), pet_id, grantee.clone()),
         AccessLevel::Full
     );
 
     env.ledger().with_mut(|l| l.timestamp = 1_000_500);
     assert_eq!(
-        PetChainContract::check_access(env.clone(), pet_id, grantee),
+        HealthyLabContract::check_access(env.clone(), pet_id, grantee),
         AccessLevel::None
     );
 }
@@ -222,15 +222,15 @@ fn test_compact_storage_removes_stale_index_entries() {
 
     // The still-active grantees remain authorized.
     assert_eq!(
-        PetChainContract::check_access(env.clone(), pet_id, g1),
+        HealthyLabContract::check_access(env.clone(), pet_id, g1),
         AccessLevel::Basic
     );
     assert_eq!(
-        PetChainContract::check_access(env.clone(), pet_id, g3),
+        HealthyLabContract::check_access(env.clone(), pet_id, g3),
         AccessLevel::Basic
     );
     assert_eq!(
-        PetChainContract::check_access(env.clone(), pet_id, g2),
+        HealthyLabContract::check_access(env.clone(), pet_id, g2),
         AccessLevel::None
     );
 }

@@ -14,7 +14,7 @@ contract's exported methods across more than one `impl` block for the same
 [stellar/rs-soroban-sdk#1360](https://github.com/stellar/rs-soroban-sdk/issues/1360).
 That means the public contract *methods* (`add_vaccination`,
 `vote_on_dispute`, `raise_dispute`, ...) must stay in a single `impl
-PetChainContract { ... }` block in `lib.rs`. What **can** move into their
+HealthyLabContract { ... }` block in `lib.rs`. What **can** move into their
 own files, safely and without touching the ABI, are the *data types* each
 domain owns: its storage-key enum, its value structs/enums, and any small
 free-standing `impl` blocks on those value types.

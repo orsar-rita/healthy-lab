@@ -1,10 +1,10 @@
-use crate::{Gender, PetChainContract, PetChainContractClient, PrivacyLevel, Species};
+use crate::{Gender, HealthyLabContract, HealthyLabContractClient, PrivacyLevel, Species};
 use soroban_sdk::{testutils::Address as _, Address, Env, String, Vec};
 
-fn setup(env: &Env) -> (PetChainContractClient<'_>, Address, Address, u64) {
+fn setup(env: &Env) -> (HealthyLabContractClient<'_>, Address, Address, u64) {
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(env, &contract_id);
 
     let admin = Address::generate(env);
     let vet = Address::generate(env);
@@ -35,7 +35,7 @@ fn setup(env: &Env) -> (PetChainContractClient<'_>, Address, Address, u64) {
     (client, admin, vet, pet_id)
 }
 
-fn add_record(client: &PetChainContractClient<'_>, env: &Env, vet: &Address, pet_id: u64) {
+fn add_record(client: &HealthyLabContractClient<'_>, env: &Env, vet: &Address, pet_id: u64) {
     client.add_medical_record(
         &pet_id,
         vet,

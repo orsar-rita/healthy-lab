@@ -27,18 +27,18 @@
 
 #[cfg(test)]
 mod tests {
-    use crate::{ContractError, PetChainContract, PetChainContractClient, STORAGE_SCHEMA_VERSION};
+    use crate::{ContractError, HealthyLabContract, HealthyLabContractClient, STORAGE_SCHEMA_VERSION};
     use soroban_sdk::{testutils::Address as _, Address, Env, Error};
 
     // ─── helper ───────────────────────────────────────────────────────────────
 
-    fn setup() -> (Env, PetChainContractClient<'static>, Address, Address) {
+    fn setup() -> (Env, HealthyLabContractClient<'static>, Address, Address) {
         let env = Env::default();
         env.mock_all_auths();
         env.budget().reset_unlimited();
 
-        let contract_id = env.register(PetChainContract, ());
-        let client = PetChainContractClient::new(&env, &contract_id);
+        let contract_id = env.register(HealthyLabContract, ());
+        let client = HealthyLabContractClient::new(&env, &contract_id);
 
         let admin = Address::generate(&env);
         let non_admin = Address::generate(&env);

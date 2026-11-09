@@ -1,6 +1,6 @@
 // Claim-document status/version lifecycle tests (Issue #1341).
 use crate::{
-    ClaimDocumentStatus, ContractError, Gender, PetChainContract, PetChainContractClient,
+    ClaimDocumentStatus, ContractError, Gender, HealthyLabContract, HealthyLabContractClient,
     PrivacyLevel, Species,
 };
 use soroban_sdk::{
@@ -12,13 +12,13 @@ const CLAIM: u64 = 7;
 
 struct Ctx<'a> {
     env: Env,
-    client: PetChainContractClient<'a>,
+    client: HealthyLabContractClient<'a>,
     admin: Address,
     owner: Address,
     pet_id: u64,
 }
 
-fn register_pet(env: &Env, client: &PetChainContractClient, owner: &Address) -> u64 {
+fn register_pet(env: &Env, client: &HealthyLabContractClient, owner: &Address) -> u64 {
     client.register_pet(
         owner,
         &String::from_str(env, "Rex"),
@@ -36,8 +36,8 @@ fn register_pet(env: &Env, client: &PetChainContractClient, owner: &Address) -> 
 fn setup<'a>() -> Ctx<'a> {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let admin = Address::generate(&env);
     let owner = Address::generate(&env);
     client.init_admin(&admin);

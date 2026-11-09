@@ -6,14 +6,14 @@ use soroban_sdk::{
 
 const NOW: u64 = 1_700_000_000;
 
-fn setup() -> (Env, PetChainContractClient<'static>, Address, Address, u64, u64) {
+fn setup() -> (Env, HealthyLabContractClient<'static>, Address, Address, u64, u64) {
     let env = Env::default();
     env.mock_all_auths();
     env.budget().reset_unlimited();
     env.ledger().set_timestamp(NOW);
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     let owner = Address::generate(&env);

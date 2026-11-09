@@ -29,19 +29,19 @@
 mod tests {
     use crate::{
         ActivityKey, BehaviorKey, BehaviorType, ContractError, DataKey, Gender, MedicalKey,
-        PetChainContract, PetChainContractClient, PrivacyLevel, Species, SystemKey,
+        HealthyLabContract, HealthyLabContractClient, PrivacyLevel, Species, SystemKey,
     };
     use soroban_sdk::{testutils::Address as _, Address, Env, Error, String};
 
     // ─── helpers ──────────────────────────────────────────────────────────────
 
-    fn setup() -> (Env, PetChainContractClient<'static>, Address, Address) {
+    fn setup() -> (Env, HealthyLabContractClient<'static>, Address, Address) {
         let env = Env::default();
         env.mock_all_auths();
         env.budget().reset_unlimited();
 
-        let contract_id = env.register(PetChainContract, ());
-        let client = PetChainContractClient::new(&env, &contract_id);
+        let contract_id = env.register(HealthyLabContract, ());
+        let client = HealthyLabContractClient::new(&env, &contract_id);
 
         let admin = Address::generate(&env);
         let mut admins = soroban_sdk::Vec::new(&env);
@@ -52,7 +52,7 @@ mod tests {
         (env, client, admin, owner)
     }
 
-    fn register_pet(client: &PetChainContractClient, env: &Env, owner: &Address) -> u64 {
+    fn register_pet(client: &HealthyLabContractClient, env: &Env, owner: &Address) -> u64 {
         client.register_pet(
             owner,
             &String::from_str(env, "Buddy"),
@@ -68,7 +68,7 @@ mod tests {
     }
 
     fn register_and_verify_vet(
-        client: &PetChainContractClient,
+        client: &HealthyLabContractClient,
         env: &Env,
         admin: &Address,
         license: &str,

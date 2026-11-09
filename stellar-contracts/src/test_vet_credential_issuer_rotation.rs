@@ -11,7 +11,7 @@ const KEY_TTL: u64 = 365 * DAY;
 
 struct Fixture {
     env: Env,
-    client: PetChainContractClient<'static>,
+    client: HealthyLabContractClient<'static>,
     admin: Address,
     issuer: Address,
     vet: Address,
@@ -25,8 +25,8 @@ fn setup() -> Fixture {
     let env = Env::default();
     env.mock_all_auths();
     env.ledger().with_mut(|l| l.timestamp = NOW);
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     client.init_admin(&admin);

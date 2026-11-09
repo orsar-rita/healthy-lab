@@ -1,5 +1,5 @@
 use criterion::{criterion_group, criterion_main, Criterion};
-use petchain_2fa::two_factor::TwoFactorAuth;
+use healthy_lab_2fa::two_factor::TwoFactorAuth;
 
 fn bench_generate_secret(c: &mut Criterion) {
     c.bench_function("generate_secret", |b| {
@@ -9,12 +9,12 @@ fn bench_generate_secret(c: &mut Criterion) {
 
 fn bench_setup(c: &mut Criterion) {
     c.bench_function("setup", |b| {
-        b.iter(|| TwoFactorAuth::setup("bench@example.com", "PetChain").unwrap())
+        b.iter(|| TwoFactorAuth::setup("bench@example.com", "Healthy Lab").unwrap())
     });
 }
 
 fn bench_verify_token_invalid(c: &mut Criterion) {
-    let setup = TwoFactorAuth::setup("bench@example.com", "PetChain").unwrap();
+    let setup = TwoFactorAuth::setup("bench@example.com", "Healthy Lab").unwrap();
     let secret = setup.secret.clone();
 
     c.bench_function("verify_token_invalid", |b| {

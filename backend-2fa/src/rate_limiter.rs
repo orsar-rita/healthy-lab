@@ -168,7 +168,7 @@ pub trait RedisBackend: Send + Sync {
 ///
 /// # Examples
 /// ```
-/// use petchain_2fa::rate_limiter::TenantRateLimitKey;
+/// use healthy_lab_2fa::rate_limiter::TenantRateLimitKey;
 ///
 /// let key = TenantRateLimitKey::new("tenant_a", "verify", "user42");
 /// assert_eq!(key.as_str(), "tenant_a::verify::user42");

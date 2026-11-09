@@ -1218,7 +1218,7 @@ impl TenantConfig {
             name: tenant_id.clone(),
             tenant_id,
             max_users: 100,
-            totp_issuer: "PetChain".to_string(),
+            totp_issuer: "Healthy Lab".to_string(),
             rate_limit_max_failures: 5,
             lockout_threshold: 10,
         }

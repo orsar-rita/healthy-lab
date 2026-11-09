@@ -3,10 +3,10 @@ pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/utils/Pausable.sol";
 
-/// @title  PetChainRegistry
-/// @notice Central registry for vets, pets, and medical records on the PetChain platform.
+/// @title  HealthyLabRegistry
+/// @notice Central registry for vets, pets, and medical records on the Healthy Lab platform.
 /// @dev    Inherits OpenZeppelin Pausable for emergency-stop functionality.
-contract PetChainRegistry is Pausable {
+contract HealthyLabRegistry is Pausable {
     // -------------------------------------------------------------------------
     // Constants — string length limits (issue #919)
     // -------------------------------------------------------------------------
@@ -191,18 +191,18 @@ contract PetChainRegistry is Pausable {
     // Modifiers
     // -------------------------------------------------------------------------
     modifier onlyAdmin() {
-        require(msg.sender == admin, "PetChainRegistry: not admin");
+        require(msg.sender == admin, "HealthyLabRegistry: not admin");
         _;
     }
 
     modifier onlyPetOwner(uint256 petId) {
-        require(pets[petId].owner == msg.sender, "PetChainRegistry: not pet owner");
+        require(pets[petId].owner == msg.sender, "HealthyLabRegistry: not pet owner");
         _;
     }
 
     modifier onlyVerifiedVet() {
         require(vets[msg.sender].isVerified && !vets[msg.sender].isRevoked,
-            "PetChainRegistry: not a verified vet");
+            "HealthyLabRegistry: not a verified vet");
         _;
     }
 
@@ -218,9 +218,9 @@ contract PetChainRegistry is Pausable {
     /// @param expectedChainId Chain id the deployer intends to target; must equal
     ///                        `block.chainid` and be a supported chain.
     constructor(address initialAdmin, uint256 expectedChainId) {
-        require(initialAdmin != address(0), "PetChainRegistry: zero admin");
-        require(expectedChainId == block.chainid, "PetChainRegistry: wrong chain");
-        require(isSupportedChainId(expectedChainId), "PetChainRegistry: unsupported chain");
+        require(initialAdmin != address(0), "HealthyLabRegistry: zero admin");
+        require(expectedChainId == block.chainid, "HealthyLabRegistry: wrong chain");
+        require(isSupportedChainId(expectedChainId), "HealthyLabRegistry: unsupported chain");
         admin = initialAdmin;
         deploymentChainId = expectedChainId;
     }
@@ -238,7 +238,7 @@ contract PetChainRegistry is Pausable {
     /// @notice Transfer the admin role to a new address.
     /// @param newAdmin The address that will become the new admin.
     function transferAdmin(address newAdmin) external onlyAdmin {
-        require(newAdmin != address(0), "PetChainRegistry: zero address");
+        require(newAdmin != address(0), "HealthyLabRegistry: zero address");
         address previous = admin;
         admin = newAdmin;
         emit AdminTransferred(previous, newAdmin);
@@ -267,12 +267,12 @@ contract PetChainRegistry is Pausable {
     /// @param licenseNumber  Professional licence number (non-empty).
     /// @param specialization Area of specialization.
     function registerVet(string calldata licenseNumber, string calldata specialization) external whenNotPaused {
-        require(bytes(licenseNumber).length > 0, "PetChainRegistry: empty licenseNumber");
+        require(bytes(licenseNumber).length > 0, "HealthyLabRegistry: empty licenseNumber");
 
         bytes32 key = _normalizeLicenseKey(licenseNumber);
         address existingHolder = _licenseToVet[key];
         require(existingHolder == address(0) || existingHolder == msg.sender,
-            "PetChainRegistry: license already registered");
+            "HealthyLabRegistry: license already registered");
 
         bytes memory prevLicense = bytes(vets[msg.sender].licenseNumber);
         if (prevLicense.length > 0) {
@@ -311,10 +311,10 @@ contract PetChainRegistry is Pausable {
         for (uint256 i = 0; i < raw.length; i++) {
             bytes1 c = raw[i];
             if (c == 0x20) continue;
-            require(c >= 0x21 && c <= 0x7E, "PetChainRegistry: invalid identifier character");
+            require(c >= 0x21 && c <= 0x7E, "HealthyLabRegistry: invalid identifier character");
             out[n++] = (c >= 0x61 && c <= 0x7A) ? bytes1(uint8(c) - 32) : c;
         }
-        require(n > 0 && n <= MAX_SHORT_LEN, "PetChainRegistry: invalid identifier length");
+        require(n > 0 && n <= MAX_SHORT_LEN, "HealthyLabRegistry: invalid identifier length");
         assembly ("memory-safe") { mstore(out, n) }
         return string(out);
     }
@@ -327,7 +327,7 @@ contract PetChainRegistry is Pausable {
     /// @notice Update the calling vet's own specialization.
     /// @param specialization New specialization string.
     function updateSpecialization(string calldata specialization) external whenNotPaused {
-        require(vets[msg.sender].vetAddress == msg.sender, "PetChainRegistry: not a registered vet");
+        require(vets[msg.sender].vetAddress == msg.sender, "HealthyLabRegistry: not a registered vet");
         vets[msg.sender].specialization = specialization;
         emit VetSpecializationUpdated(msg.sender, specialization);
     }
@@ -335,7 +335,7 @@ contract PetChainRegistry is Pausable {
     /// @notice Verify a registered vet. Only callable by admin.
     /// @param vet Address of the vet to verify.
     function verifyVet(address vet) external onlyAdmin whenNotPaused {
-        require(!vets[vet].isRevoked, "PetChainRegistry: vet is revoked");
+        require(!vets[vet].isRevoked, "HealthyLabRegistry: vet is revoked");
         vets[vet].isVerified = true;
         emit VetVerified(vet);
     }
@@ -365,13 +365,13 @@ contract PetChainRegistry is Pausable {
         string calldata birthday
     ) external whenNotPaused returns (uint256 petId) {
         require(bytes(name).length > 0 && bytes(name).length <= MAX_SHORT_LEN,
-            "PetChainRegistry: invalid name length");
+            "HealthyLabRegistry: invalid name length");
         require(bytes(species).length > 0 && bytes(species).length <= MAX_SHORT_LEN,
-            "PetChainRegistry: invalid species length");
+            "HealthyLabRegistry: invalid species length");
         require(bytes(breed).length > 0 && bytes(breed).length <= MAX_SHORT_LEN,
-            "PetChainRegistry: invalid breed length");
+            "HealthyLabRegistry: invalid breed length");
         require(bytes(birthday).length > 0 && bytes(birthday).length <= MAX_SHORT_LEN,
-            "PetChainRegistry: invalid birthday length");
+            "HealthyLabRegistry: invalid birthday length");
 
         petId = ++_petCounter;
         pets[petId] = Pet({
@@ -391,10 +391,10 @@ contract PetChainRegistry is Pausable {
     /// @param petId ID of the pet to transfer.
     /// @param to    Recipient address (non-zero).
     function transferPet(uint256 petId, address to) external onlyPetOwner(petId) whenNotPaused {
-        require(to != address(0), "PetChainRegistry: zero address");
-        require(pets[petId].active, "PetChainRegistry: pet inactive");
+        require(to != address(0), "HealthyLabRegistry: zero address");
+        require(pets[petId].active, "HealthyLabRegistry: pet inactive");
         address from = pets[petId].owner;
-        require(to != from, "PetChainRegistry: self transfer");
+        require(to != from, "HealthyLabRegistry: self transfer");
 
         // All validation above; state writes below (issue #1326).
         _removeOwnerPet(from, petId);
@@ -410,7 +410,7 @@ contract PetChainRegistry is Pausable {
     ///         for historical ownership and commitment proofs.
     /// @param petId ID of the pet to deactivate.
     function deactivatePet(uint256 petId) external onlyPetOwner(petId) whenNotPaused {
-        require(pets[petId].active, "PetChainRegistry: already inactive");
+        require(pets[petId].active, "HealthyLabRegistry: already inactive");
         pets[petId].active = false;
         _removeOwnerPet(msg.sender, petId);
         emit PetDeactivated(petId);
@@ -419,7 +419,7 @@ contract PetChainRegistry is Pausable {
     /// @notice Reactivate a previously deactivated pet. Only callable by the pet's owner.
     /// @param petId ID of the pet to reactivate.
     function reactivatePet(uint256 petId) external onlyPetOwner(petId) whenNotPaused {
-        require(!pets[petId].active, "PetChainRegistry: already active");
+        require(!pets[petId].active, "HealthyLabRegistry: already active");
         pets[petId].active = true;
         _ownerPets[msg.sender].push(petId);
         emit PetReactivated(petId);
@@ -455,13 +455,13 @@ contract PetChainRegistry is Pausable {
         string calldata treatment,
         string calldata notes
     ) external onlyVerifiedVet whenNotPaused returns (uint256 recordId) {
-        require(pets[petId].active, "PetChainRegistry: pet inactive");
+        require(pets[petId].active, "HealthyLabRegistry: pet inactive");
         require(bytes(diagnosis).length > 0 && bytes(diagnosis).length <= MAX_LONG_LEN,
-            "PetChainRegistry: invalid diagnosis length");
+            "HealthyLabRegistry: invalid diagnosis length");
         require(bytes(treatment).length > 0 && bytes(treatment).length <= MAX_LONG_LEN,
-            "PetChainRegistry: invalid treatment length");
+            "HealthyLabRegistry: invalid treatment length");
         require(bytes(notes).length <= MAX_LONG_LEN,
-            "PetChainRegistry: notes too long");
+            "HealthyLabRegistry: notes too long");
 
         recordId = ++_recordCounter;
         _recordPet[recordId]   = petId;
@@ -527,20 +527,20 @@ contract PetChainRegistry is Pausable {
         string calldata notes
     ) external {
         uint256 petId = _recordPet[recordId];
-        require(petId != 0, "PetChainRegistry: record does not exist");
+        require(petId != 0, "HealthyLabRegistry: record does not exist");
         MedicalRecord storage rec = _petRecords[petId][_recordIndex[recordId]];
-        require(rec.recordId == recordId, "PetChainRegistry: record not found");
+        require(rec.recordId == recordId, "HealthyLabRegistry: record not found");
         require(
             msg.sender == rec.vet || msg.sender == admin,
-            "PetChainRegistry: not authorized"
+            "HealthyLabRegistry: not authorized"
         );
 
         require(bytes(diagnosis).length > 0 && bytes(diagnosis).length <= MAX_LONG_LEN,
-            "PetChainRegistry: invalid diagnosis length");
+            "HealthyLabRegistry: invalid diagnosis length");
         require(bytes(treatment).length > 0 && bytes(treatment).length <= MAX_LONG_LEN,
-            "PetChainRegistry: invalid treatment length");
+            "HealthyLabRegistry: invalid treatment length");
         require(bytes(notes).length <= MAX_LONG_LEN,
-            "PetChainRegistry: notes too long");
+            "HealthyLabRegistry: notes too long");
 
         string memory origDiagnosis = rec.diagnosis;
         string memory origTreatment = rec.treatment;

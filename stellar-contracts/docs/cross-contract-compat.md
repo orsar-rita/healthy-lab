@@ -6,7 +6,7 @@ Soroban environment and exercises the interfaces they share:
 
 | Contract | Source | How it is deployed in the test |
 |---|---|---|
-| Main (`PetChainContract`) | `src/lib.rs` | Release WASM (`PETCHAIN_MAIN_WASM`) |
+| Main (`HealthyLabContract`) | `src/lib.rs` | Release WASM (`HEALTHY_LAB_MAIN_WASM`) |
 | Ownership / adoption / escrowed transfers (`PetOwnershipContract`) | `contracts/pet-transfer-adoption/src/lib.rs` | Native |
 | Vet registry (`VetRegistryContract`) | `contracts/pet-transfer-adoption/src/vet_registry.rs` | Native |
 
@@ -44,9 +44,9 @@ The `fixture` module in that file fails when a shared interface drifts:
 cd stellar-contracts
 cargo build --target wasm32-unknown-unknown --release
 cd contracts/pet-transfer-adoption
-PETCHAIN_MAIN_WASM=$(realpath ../../../target/wasm32-unknown-unknown/release/petchain_stellar.wasm) \
+HEALTHY_LAB_MAIN_WASM=$(realpath ../../../target/wasm32-unknown-unknown/release/healthy_lab_stellar.wasm) \
   cargo test test_cross_contract -- --include-ignored
 ```
 
-Without `PETCHAIN_MAIN_WASM`, the main-contract test is skipped as ignored and
+Without `HEALTHY_LAB_MAIN_WASM`, the main-contract test is skipped as ignored and
 the remaining cross-contract tests still run.

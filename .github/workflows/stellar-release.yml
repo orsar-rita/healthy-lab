@@ -151,7 +151,7 @@ jobs:
         run: |
           set -euo pipefail
           TAG="${GITHUB_REF#refs/tags/}"
-          ARCHIVE_NAME="petchain-stellar-release-${TAG}"
+          ARCHIVE_NAME="healthy-lab-stellar-release-${TAG}"
           tar -czf "${ARCHIVE_NAME}.tar.gz" \
             --exclude='*.json' \
             --exclude='checksums.txt' \

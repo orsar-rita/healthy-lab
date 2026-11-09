@@ -246,7 +246,7 @@ fn test_verify_and_activate_persists_enabled_state() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "activate@petchain.com".to_string(),
+            email: "activate@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -280,7 +280,7 @@ fn test_activation_does_not_persist_on_failed_verification() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "no-partial@petchain.com".to_string(),
+            email: "no-partial@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -351,7 +351,7 @@ fn test_verify_login_token_succeeds_with_correct_token_when_enabled() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "enabled@petchain.com".to_string(),
+            email: "enabled@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -510,7 +510,7 @@ mod test_authorization {
             EnableTwoFactorRequest {
                 idempotency_key: None,
                 user_id: "user-1".to_string(),
-                email: "user1@petchain.com".to_string(),
+                email: "user1@healthy-lab.example".to_string(),
             },
         );
         assert!(
@@ -526,7 +526,7 @@ mod test_authorization {
             EnableTwoFactorRequest {
                 idempotency_key: None,
                 user_id: "user-2".to_string(),
-                email: "user2@petchain.com".to_string(),
+                email: "user2@healthy-lab.example".to_string(),
             },
         );
         assert!(result.is_err());
@@ -637,7 +637,7 @@ fn test_handler_verify_activates_2fa() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "u2@petchain.com".to_string(),
+            email: "u2@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -665,7 +665,7 @@ fn test_handler_verify_invalid_token_does_not_activate() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "u3@petchain.com".to_string(),
+            email: "u3@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -692,7 +692,7 @@ fn test_handler_disable_when_not_enabled_returns_false() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "u6@petchain.com".to_string(),
+            email: "u6@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -726,7 +726,7 @@ fn test_full_enable_verify_login_disable_flow() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "user1@petchain.com".to_string(),
+            email: "user1@healthy-lab.example".to_string(),
         },
     )
     .expect("enable should succeed");
@@ -806,7 +806,7 @@ fn test_rate_limit_exhaustion_blocks_activation() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "user4@petchain.com".to_string(),
+            email: "user4@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -844,7 +844,7 @@ fn setup_then_verify_succeeds_for_all_algorithms_and_windows() {
         for &window in &WINDOWS {
             let config = TotpConfig::new(algorithm, 6, 30, window).expect("valid config");
             let setup =
-                TwoFactorAuth::setup_with_config("prop@petchain.com", "PetChain", config.clone())
+                TwoFactorAuth::setup_with_config("prop@healthy-lab.example", "Healthy Lab", config.clone())
                     .unwrap_or_else(|e| {
                         panic!("setup failed for {:?} window={}: {}", algorithm, window, e)
                     });
@@ -893,7 +893,7 @@ fn eight_digit_tokens_verify_for_all_algorithms() {
     for &algorithm in &ALGORITHMS {
         let config = TotpConfig::new(algorithm, 8, 30, 1).unwrap();
         let setup =
-            TwoFactorAuth::setup_with_config("8dig@petchain.com", "PetChain", config.clone())
+            TwoFactorAuth::setup_with_config("8dig@healthy-lab.example", "Healthy Lab", config.clone())
                 .unwrap();
         let totp = TOTP::new(
             algorithm,
@@ -986,7 +986,7 @@ fn test_upgrade_algorithm_unauthorized_caller() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "unauth@petchain.com".to_string(),
+            email: "unauth@healthy-lab.example".to_string(),
         },
     )
     .unwrap();

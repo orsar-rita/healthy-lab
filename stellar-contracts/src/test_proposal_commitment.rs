@@ -1,13 +1,13 @@
 use crate::{
-    ContractError, PetChainContract, PetChainContractClient, ProposalAction, SystemKey,
+    ContractError, HealthyLabContract, HealthyLabContractClient, ProposalAction, SystemKey,
     MultiSigProposal,
 };
 use soroban_sdk::{testutils::Address as _, Address, BytesN, Env, Error, Vec};
 
-fn setup(env: &Env) -> (PetChainContractClient, Address, Address) {
+fn setup(env: &Env) -> (HealthyLabContractClient, Address, Address) {
     env.mock_all_auths();
-    let id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(env, &id);
+    let id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(env, &id);
     let admin = Address::generate(env);
     let mut admins = Vec::new(env);
     admins.push_back(admin.clone());

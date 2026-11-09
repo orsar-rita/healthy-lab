@@ -1,6 +1,6 @@
-# PetChain 2FA
+# Healthy Lab 2FA
 
-Configurable TOTP-based Two-Factor Authentication for PetChain backend with cryptographic agility.
+Configurable TOTP-based Two-Factor Authentication for Healthy Lab backend with cryptographic agility.
 
 ## Features
 
@@ -32,7 +32,7 @@ cp src/handlers.rs    <your-backend>/src/
 ### 3. Set up the database
 
 ```bash
-psql -U postgres -d petchain_db -f schema.sql
+psql -U postgres -d healthy_lab_db -f schema.sql
 ```
 
 Or run the numbered migrations in `migrations/` in order.
@@ -136,11 +136,11 @@ TotpConfig::high_security() // SHA512, 8 digits
 
 ```rust
 // Default setup (SHA1, backward-compatible)
-let setup = TwoFactorAuth::setup("user@example.com", "PetChain")?;
+let setup = TwoFactorAuth::setup("user@example.com", "Healthy Lab")?;
 
 // High-security setup
 let config = TotpConfig::high_security();
-let setup = TwoFactorAuth::setup_with_config("user@example.com", "PetChain", config)?;
+let setup = TwoFactorAuth::setup_with_config("user@example.com", "Healthy Lab", config)?;
 
 // Custom configuration
 let config = TotpConfig { algorithm: Algorithm::SHA256, digits: 6, period: 30, window: 1 };

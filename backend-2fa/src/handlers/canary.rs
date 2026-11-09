@@ -44,7 +44,7 @@ impl CanaryHandlers {
         admin: &AuthenticatedAdmin,
         req: CreateCanaryRequest,
     ) -> Result<CreateCanaryResponse, String> {
-        let setup = TwoFactorAuth::setup(&req.email, "PetChain")?;
+        let setup = TwoFactorAuth::setup(&req.email, "Healthy Lab")?;
 
         // Persist Argon2id hashes only; the canary response never exposes
         // backup codes at all, so there is no plaintext to preserve here.

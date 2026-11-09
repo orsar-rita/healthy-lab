@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Reference implementation for the PetChain canonical consent hash (Issue #1337).
+Reference implementation for the Healthy Lab canonical consent hash (Issue #1337).
 
 Reproduces, byte-for-byte, `canonical_consent_hash` in
 stellar-contracts/src/consent_canon.rs and prints the vectors asserted in

@@ -1,4 +1,4 @@
-//! Actix-web integration example for PetChain 2FA.
+//! Actix-web integration example for Healthy Lab 2FA.
 //! Run with: cargo run --example example_integration
 //!
 //! # CORS for Browser-Based SPA Clients
@@ -34,11 +34,11 @@
 
 use actix_cors::Cors;
 use actix_web::{http, middleware, web, App, HttpResponse, HttpServer};
-use petchain_2fa::handlers::{
+use healthy_lab_2fa::handlers::{
     AuthenticatedUser, DisableTwoFactorRequest, EnableTwoFactorRequest, LoginWithTwoFactorRequest,
     RecoverWithBackupRequest, TwoFactorHandlers, VerifyTwoFactorRequest,
 };
-use petchain_2fa::{ApiError, ContentTypeGuard, ErrorResponseMiddleware};
+use healthy_lab_2fa::{ApiError, ContentTypeGuard, ErrorResponseMiddleware};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
@@ -230,7 +230,7 @@ async fn recover_2fa(req: web::Json<RecoverWithBackupRequest>) -> Result<HttpRes
 ///
 /// ```rust
 /// let origin = std::env::var("CORS_ALLOWED_ORIGIN")
-///     .unwrap_or_else(|_| "https://app.petchain.example.com".to_string());
+///     .unwrap_or_else(|_| "https://app.healthy-lab.example".to_string());
 /// let cors = build_cors(&origin);
 /// ```
 ///

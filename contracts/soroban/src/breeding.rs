@@ -143,10 +143,10 @@ fn save_breeding_storage(env: &Env, storage: &BreedingStorage) {
 }
 
 #[contract]
-pub struct PetChainBreedingContract;
+pub struct HealthyLabBreedingContract;
 
 #[contractimpl]
-impl PetChainBreedingContract {
+impl HealthyLabBreedingContract {
     // ---------------------------------------------------------------------------
     // Issue #1489: Post-Birth Health Follow-Up Obligations
     // ---------------------------------------------------------------------------
@@ -586,9 +586,9 @@ mod tests {
     use super::*;
     use soroban_sdk::testutils::{Address as _, Ledger as _};
 
-    fn setup_client(env: &Env) -> (PetChainBreedingContractClient<'_>, Address) {
-        let contract_id = env.register_contract(None, PetChainBreedingContract);
-        let client = PetChainBreedingContractClient::new(env, &contract_id);
+    fn setup_client(env: &Env) -> (HealthyLabBreedingContractClient<'_>, Address) {
+        let contract_id = env.register_contract(None, HealthyLabBreedingContract);
+        let client = HealthyLabBreedingContractClient::new(env, &contract_id);
         let caller = Address::generate(env);
         (client, caller)
     }

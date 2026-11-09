@@ -1,14 +1,14 @@
 use crate::{
-    ContractError, Gender, InsuranceClaimStatus, PetChainContract, PetChainContractClient,
+    ContractError, Gender, InsuranceClaimStatus, HealthyLabContract, HealthyLabContractClient,
     PrivacyLevel, Species,
 };
 use soroban_sdk::{testutils::Address as _, testutils::Ledger, Address, Env, Error, String};
 
-fn setup() -> (Env, PetChainContractClient<'static>, Address, Address, u64, String) {
+fn setup() -> (Env, HealthyLabContractClient<'static>, Address, Address, u64, String) {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let admin = Address::generate(&env);
     client.init_admin(&admin);
     let owner = Address::generate(&env);
@@ -39,7 +39,7 @@ fn setup() -> (Env, PetChainContractClient<'static>, Address, Address, u64, Stri
 
 fn configure(
     env: &Env,
-    client: &PetChainContractClient,
+    client: &HealthyLabContractClient,
     owner: &Address,
     pet_id: u64,
     policy_id: &String,

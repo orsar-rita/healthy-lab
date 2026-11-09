@@ -1,17 +1,17 @@
-use crate::{CustodyEntry, Gender, PetChainContract, PetChainContractClient, PrivacyLevel, Species, SystemKey, TransferType};
+use crate::{CustodyEntry, Gender, HealthyLabContract, HealthyLabContractClient, PrivacyLevel, Species, SystemKey, TransferType};
 use soroban_sdk::{testutils::Address as _, Address, Env, String, Vec};
 
-fn setup(env: &Env) -> (PetChainContractClient, Address, Address) {
+fn setup(env: &Env) -> (HealthyLabContractClient, Address, Address) {
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(env, &contract_id);
     let owner = Address::generate(env);
     let new_owner = Address::generate(env);
     client.init_admin(&owner);
     (client, owner, new_owner)
 }
 
-fn register_pet(client: &PetChainContractClient, env: &Env, owner: &Address) -> u64 {
+fn register_pet(client: &HealthyLabContractClient, env: &Env, owner: &Address) -> u64 {
     client.register_pet(
         owner,
         &String::from_str(env, "Buddy"),
@@ -171,8 +171,8 @@ fn verify_custody_chain_valid_for_consistent_chain() {
 #[test]
 fn verify_custody_chain_detects_gap_at_index() {
     let env = Env::default();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
     let a = Address::generate(&env);
     let b = Address::generate(&env);
@@ -208,8 +208,8 @@ fn verify_custody_chain_detects_gap_at_index() {
 #[test]
 fn verify_custody_chain_detects_forked_chain() {
     let env = Env::default();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
     let a = Address::generate(&env);
     let b = Address::generate(&env);
@@ -245,8 +245,8 @@ fn verify_custody_chain_detects_forked_chain() {
 #[test]
 fn verify_custody_chain_detects_current_owner_mismatch() {
     let env = Env::default();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
     let new_owner = Address::generate(&env);
     let stranger = Address::generate(&env);
@@ -299,7 +299,7 @@ fn custody_append_rejects_self_link() {
     let (client, owner, _) = setup(&env);
     let pet_id = register_pet(&client, &env, &owner);
     env.as_contract(&client.address, || {
-        PetChainContract::append_custody_entry(&env, pet_id, owner.clone(), owner.clone(), TransferType::Direct);
+        HealthyLabContract::append_custody_entry(&env, pet_id, owner.clone(), owner.clone(), TransferType::Direct);
     });
 }
 
@@ -311,7 +311,7 @@ fn custody_append_rejects_broken_ancestry() {
     let stranger = Address::generate(&env);
     let pet_id = register_pet(&client, &env, &owner);
     env.as_contract(&client.address, || {
-        PetChainContract::append_custody_entry(&env, pet_id, owner.clone(), new_owner.clone(), TransferType::Direct);
-        PetChainContract::append_custody_entry(&env, pet_id, stranger.clone(), owner.clone(), TransferType::Direct);
+        HealthyLabContract::append_custody_entry(&env, pet_id, owner.clone(), new_owner.clone(), TransferType::Direct);
+        HealthyLabContract::append_custody_entry(&env, pet_id, stranger.clone(), owner.clone(), TransferType::Direct);
     });
 }

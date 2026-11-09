@@ -1,11 +1,11 @@
-use crate::{Allele, Gender, PetChainContract, PetChainContractClient, PrivacyLevel, Species};
+use crate::{Allele, Gender, HealthyLabContract, HealthyLabContractClient, PrivacyLevel, Species};
 use soroban_sdk::{testutils::Address as _, Address, Env, Map, String};
 
-fn setup() -> (Env, PetChainContractClient<'static>, Address, u64, u64) {
+fn setup() -> (Env, HealthyLabContractClient<'static>, Address, u64, u64) {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
 
     let sire_id = client.register_pet(

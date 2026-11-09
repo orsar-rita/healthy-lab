@@ -1,7 +1,7 @@
 // Confirmed purge: role, replay, scope, hold and audit-privacy tests
 // (Issue #1344).
 use crate::{
-    ContractError, Gender, PetChainContract, PetChainContractClient, PrivacyLevel, PurgeAuditEvent,
+    ContractError, Gender, HealthyLabContract, HealthyLabContractClient, PrivacyLevel, PurgeAuditEvent,
     PurgeRole, Species, MAX_PURGE_BATCH, PURGE_RECORDS_DIGEST_DOMAIN,
 };
 use soroban_sdk::{
@@ -16,14 +16,14 @@ const DIAGNOSIS: &str = "SECRET-DIAGNOSIS-TEXT";
 
 struct Ctx<'a> {
     env: Env,
-    client: PetChainContractClient<'a>,
+    client: HealthyLabContractClient<'a>,
     admin: Address,
     owner: Address,
     vet: Address,
     pet_id: u64,
 }
 
-fn register_pet(env: &Env, client: &PetChainContractClient, owner: &Address) -> u64 {
+fn register_pet(env: &Env, client: &HealthyLabContractClient, owner: &Address) -> u64 {
     client.register_pet(
         owner,
         &String::from_str(env, "Rex"),
@@ -43,8 +43,8 @@ fn setup<'a>() -> Ctx<'a> {
     env.mock_all_auths();
     env.budget().reset_unlimited();
     env.ledger().with_mut(|l| l.timestamp = 1_700_000_000);
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let admin = Address::generate(&env);
     let owner = Address::generate(&env);
     client.init_admin(&admin);

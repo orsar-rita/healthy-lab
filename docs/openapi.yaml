@@ -1,9 +1,9 @@
 openapi: 3.0.3
 info:
-  title: PetChain Backend 2FA API
+  title: Healthy Lab Backend 2FA API
   version: "1.0.0"
   description: |
-    OpenAPI 3.0 specification for the PetChain Backend 2FA service.
+    OpenAPI 3.0 specification for the Healthy Lab Backend 2FA service.
 
     ## Authentication
     All write endpoints require a Bearer JWT in the `Authorization` header.
@@ -23,7 +23,7 @@ info:
 servers:
   - url: http://localhost:8080
     description: Local development
-  - url: https://api.petchain.io
+  - url: https://api.healthy-lab.example
     description: Production
 
 tags:
@@ -498,7 +498,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: Supabase / PetChain JWT
+      description: Supabase / Healthy Lab JWT
 
   parameters:
     PageParam:
@@ -583,12 +583,12 @@ components:
         email:
           type: string
           format: email
-          example: alice@petchain.io
+          example: alice@healthy-lab.example
         issuer:
           type: string
           description: Issuer label shown in authenticator apps
-          default: PetChain
-          example: PetChain
+          default: Healthy Lab
+          example: Healthy Lab
 
     EnableTwoFactorResponse:
       type: object
@@ -601,7 +601,7 @@ components:
         qr_code_uri:
           type: string
           description: otpauth:// URI for QR code generation
-          example: "otpauth://totp/PetChain:alice@petchain.io?secret=JBSWY3DP&issuer=PetChain"
+          example: "otpauth://totp/Healthy Lab:alice@healthy-lab.example?secret=JBSWY3DP&issuer=Healthy Lab"
         backup_codes:
           type: array
           description: One-time backup codes for account recovery

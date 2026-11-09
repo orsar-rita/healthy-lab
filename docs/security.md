@@ -1,6 +1,6 @@
 # Security Policy
 
-`DogStark/PetChain-Contracts` takes the security of our smart contracts and protocol seriously. We appreciate the efforts of security researchers and community members in keeping our ecosystem safe.
+`DogStark/healthy-lab` takes the security of our smart contracts and protocol seriously. We appreciate the efforts of security researchers and community members in keeping our ecosystem safe.
 
 ## 1. Supported Versions
 
@@ -20,7 +20,7 @@ We apply security updates and bug fixes to the following active versions:
 
 Please submit all vulnerability reports privately using one of the following channels:
 
-* **Email:** [security@petchain.dog](mailto:security@petchain.dog) *(Update with your team's security email address)*
+* **Email:** [security@healthy-lab.example](mailto:security@healthy-lab.example) *(Update with your team's security email address)*
 * **Encrypted Reporting:** [Insert PGP Key or Security Portal Link if applicable]
 
 ### What to Include in Your Report
@@ -59,7 +59,7 @@ Once reported, your submission will move through the following defined states:
 * We follow a **Coordinated Disclosure** policy. Please give our team adequate time to fix the issue before sharing any details publicly.
 * If a bug bounty program is active, qualifying reports submitted in accordance with this policy may be eligible for a reward based on severity (evaluated using CVSS v3/SWC registry guidelines).
 
-Thank you for helping secure the PetChain ecosystem!
+Thank you for helping secure the Healthy Lab ecosystem!
 
 
 

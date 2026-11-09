@@ -1,13 +1,13 @@
-use crate::{ContractError, PetChainContract, PetChainContractClient};
+use crate::{ContractError, HealthyLabContract, HealthyLabContractClient};
 use soroban_sdk::{
     testutils::{Address as _, Ledger as _},
     Address, BytesN, Env, Error, Vec,
 };
 
-fn setup(env: &Env) -> (PetChainContractClient, Address, Address) {
+fn setup(env: &Env) -> (HealthyLabContractClient, Address, Address) {
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(env, &contract_id);
 
     let admin1 = Address::generate(env);
     let admin2 = Address::generate(env);

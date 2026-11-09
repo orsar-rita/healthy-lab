@@ -7,8 +7,8 @@
 //! Contracts under test:
 //! - `PetOwnershipContract` — transfers, adoption and escrowed transfers.
 //! - `VetRegistryContract` — standalone vet registry.
-//! - `PetChainContract` (main, `stellar-contracts/src/lib.rs`) — loaded from its
-//!   release WASM via `PETCHAIN_MAIN_WASM`; the CI `cross-contract` job builds
+//! - `HealthyLabContract` (main, `stellar-contracts/src/lib.rs`) — loaded from its
+//!   release WASM via `HEALTHY_LAB_MAIN_WASM`; the CI `cross-contract` job builds
 //!   it and runs these tests with `--include-ignored`.
 //!
 //! The `fixture` module is the compatibility fixture: it fails to compile on
@@ -252,13 +252,13 @@ fn disputed_transfer_cannot_be_finalized() {
 
 /// Deploys the main contract WASM alongside the others. Run by the CI
 /// `cross-contract` job; locally, build the main contract for
-/// `wasm32-unknown-unknown` and set `PETCHAIN_MAIN_WASM` to its path.
+/// `wasm32-unknown-unknown` and set `HEALTHY_LAB_MAIN_WASM` to its path.
 #[test]
-#[ignore = "needs PETCHAIN_MAIN_WASM (run by the CI cross-contract job)"]
+#[ignore = "needs HEALTHY_LAB_MAIN_WASM (run by the CI cross-contract job)"]
 fn main_contract_interoperates_with_workspace_contracts() {
-    let path = std::env::var("PETCHAIN_MAIN_WASM")
-        .expect("set PETCHAIN_MAIN_WASM to the main contract's release WASM");
-    let wasm = std::fs::read(&path).expect("read PETCHAIN_MAIN_WASM");
+    let path = std::env::var("HEALTHY_LAB_MAIN_WASM")
+        .expect("set HEALTHY_LAB_MAIN_WASM to the main contract's release WASM");
+    let wasm = std::fs::read(&path).expect("read HEALTHY_LAB_MAIN_WASM");
 
     let d = deploy();
     let env = &d.env;

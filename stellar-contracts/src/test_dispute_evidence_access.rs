@@ -3,11 +3,11 @@
 use crate::*;
 use soroban_sdk::{testutils::Address as _, Address, BytesN, Env, String};
 
-fn setup() -> (Env, PetChainContractClient<'static>, Address, Address, Address, u64) {
+fn setup() -> (Env, HealthyLabContractClient<'static>, Address, Address, Address, u64) {
     let env = Env::default();
     env.mock_all_auths();
-    let id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &id);
+    let id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &id);
     let admin = Address::generate(&env);
     client.init_admin(&admin);
     let owner = Address::generate(&env);

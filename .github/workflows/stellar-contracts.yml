@@ -265,9 +265,9 @@ jobs:
       - name: Run cross-contract compatibility tests
         working-directory: stellar-contracts/contracts/pet-transfer-adoption
         run: |
-          export PETCHAIN_MAIN_WASM=$(find "$GITHUB_WORKSPACE/target" "$GITHUB_WORKSPACE/stellar-contracts/target" \
-            -path '*wasm32-unknown-unknown/release/petchain_stellar.wasm' 2>/dev/null | head -n 1)
-          test -n "$PETCHAIN_MAIN_WASM" || { echo "main contract WASM not found" >&2; exit 1; }
+          export HEALTHY_LAB_MAIN_WASM=$(find "$GITHUB_WORKSPACE/target" "$GITHUB_WORKSPACE/stellar-contracts/target" \
+            -path '*wasm32-unknown-unknown/release/healthy_lab_stellar.wasm' 2>/dev/null | head -n 1)
+          test -n "$HEALTHY_LAB_MAIN_WASM" || { echo "main contract WASM not found" >&2; exit 1; }
           # soroban-env-host accepts any ed25519-dalek >= 2; keep it on the 2.x
           # line that soroban-sdk's testutils are built against.
           cargo generate-lockfile
@@ -350,10 +350,10 @@ jobs:
       fail-fast: false
       matrix:
         crate:
-          - petchain-contract
-          - petchain-registry
-          - petchain-consent
-          - petchain-claims
+          - healthy-lab-contract
+          - healthy-lab-registry
+          - healthy-lab-consent
+          - healthy-lab-claims
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7

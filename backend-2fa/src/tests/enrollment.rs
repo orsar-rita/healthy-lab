@@ -69,7 +69,7 @@ fn test_totp_config_high_security() {
 
 #[test]
 fn test_setup_two_factor_default() {
-    let result = TwoFactorAuth::setup("test@petchain.com", "PetChain");
+    let result = TwoFactorAuth::setup("test@healthy-lab.example", "Healthy Lab");
     assert!(result.is_ok());
     let setup = result.unwrap();
     assert!(!setup.secret.is_empty());
@@ -78,9 +78,9 @@ fn test_setup_two_factor_default() {
     assert_eq!(setup.config.algorithm, Algorithm::SHA1);
     assert!(setup
         .otpauth_uri
-        .starts_with("otpauth://totp/PetChain:test%40petchain.com?"));
+        .starts_with("otpauth://totp/Healthy Lab:test%40healthy-lab.example?"));
     assert!(setup.otpauth_uri.contains("secret="));
-    assert!(setup.otpauth_uri.contains("&issuer=PetChain"));
+    assert!(setup.otpauth_uri.contains("&issuer=Healthy Lab"));
     assert!(setup.otpauth_uri.contains("&algorithm=SHA1"));
     assert!(setup.otpauth_uri.contains("&digits=6"));
     assert!(setup.otpauth_uri.contains("&period=30"));
@@ -88,9 +88,9 @@ fn test_setup_two_factor_default() {
 
 #[test]
 fn test_otpauth_uri_url_encodes_issuer_and_account() {
-    let setup = TwoFactorAuth::setup("first.last+pet@example.com", "Pet Chain: Ops").unwrap();
+    let setup = TwoFactorAuth::setup("first.last+pet@example.com", "Healthy Lab: Ops").unwrap();
     // Colon in issuer is replaced with a space by sanitize_issuer, resulting
-    // in "Pet Chain  Ops" which URL-encodes to "Pet%20Chain%20%20Ops"
+    // in "Healthy Lab  Ops" which URL-encodes to "Pet%20Chain%20%20Ops"
     assert!(setup
         .otpauth_uri
         .starts_with("otpauth://totp/Pet%20Chain%20%20Ops:first.last%2Bpet%40example.com?"));
@@ -131,7 +131,7 @@ fn test_issuer_with_colon_is_consistent_between_qr_and_uri() {
 #[test]
 fn test_setup_two_factor_with_sha1_config() {
     let config = TotpConfig::legacy_sha1();
-    let result = TwoFactorAuth::setup_with_config("test@petchain.com", "PetChain", config.clone());
+    let result = TwoFactorAuth::setup_with_config("test@healthy-lab.example", "Healthy Lab", config.clone());
     assert!(result.is_ok());
 
     let setup = result.unwrap();
@@ -144,7 +144,7 @@ fn test_setup_two_factor_with_sha1_config() {
 #[test]
 fn test_setup_two_factor_with_sha512_config() {
     let config = TotpConfig::high_security();
-    let result = TwoFactorAuth::setup_with_config("test@petchain.com", "PetChain", config.clone());
+    let result = TwoFactorAuth::setup_with_config("test@healthy-lab.example", "Healthy Lab", config.clone());
     assert!(result.is_ok());
 
     let setup = result.unwrap();
@@ -200,7 +200,7 @@ fn test_enable_two_factor_persists_data() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "persist@petchain.com".to_string(),
+            email: "persist@healthy-lab.example".to_string(),
         },
     )
     .expect("enable_two_factor should succeed");
@@ -228,7 +228,7 @@ fn test_enable_two_factor_overwrites_existing_record() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "overwrite@petchain.com".to_string(),
+            email: "overwrite@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -238,7 +238,7 @@ fn test_enable_two_factor_overwrites_existing_record() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "overwrite@petchain.com".to_string(),
+            email: "overwrite@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -258,7 +258,7 @@ fn test_enroll_same_idempotency_key_returns_identical_secret() {
     let user_id = "user-idempotent";
     let req = EnableTwoFactorRequest {
         user_id: user_id.to_string(),
-        email: "idempotent@petchain.com".to_string(),
+        email: "idempotent@healthy-lab.example".to_string(),
         idempotency_key: Some("retry-key-1".to_string()),
     };
 
@@ -281,7 +281,7 @@ fn test_enroll_different_idempotency_key_generates_new_secret() {
         &caller(user_id),
         EnableTwoFactorRequest {
             user_id: user_id.to_string(),
-            email: "idempotent2@petchain.com".to_string(),
+            email: "idempotent2@healthy-lab.example".to_string(),
             idempotency_key: Some("key-a".to_string()),
         },
     )
@@ -295,7 +295,7 @@ fn test_enroll_different_idempotency_key_generates_new_secret() {
         &caller(user_id),
         EnableTwoFactorRequest {
             user_id: user_id.to_string(),
-            email: "idempotent2@petchain.com".to_string(),
+            email: "idempotent2@healthy-lab.example".to_string(),
             idempotency_key: Some("key-b".to_string()),
         },
     )
@@ -323,7 +323,7 @@ fn test_enroll_rate_limited_when_exceeding_limit() {
         &caller(user_id),
         EnableTwoFactorRequest {
             user_id: user_id.to_string(),
-            email: "user1@petchain.com".to_string(),
+            email: "user1@healthy-lab.example".to_string(),
             idempotency_key: None,
         },
     );
@@ -334,7 +334,7 @@ fn test_enroll_rate_limited_when_exceeding_limit() {
         &caller(user_id),
         EnableTwoFactorRequest {
             user_id: user_id.to_string(),
-            email: "user2@petchain.com".to_string(),
+            email: "user2@healthy-lab.example".to_string(),
             idempotency_key: None,
         },
     );
@@ -345,7 +345,7 @@ fn test_enroll_rate_limited_when_exceeding_limit() {
         &caller(user_id),
         EnableTwoFactorRequest {
             user_id: user_id.to_string(),
-            email: "user3@petchain.com".to_string(),
+            email: "user3@healthy-lab.example".to_string(),
             idempotency_key: None,
         },
     );
@@ -378,7 +378,7 @@ fn test_enroll_allowed_under_limit() {
             &caller(user_id),
             EnableTwoFactorRequest {
                 user_id: user_id.to_string(),
-                email: format!("user{}@petchain.com", i),
+                email: format!("user{}@healthy-lab.example", i),
                 idempotency_key: None,
             },
         );
@@ -396,7 +396,7 @@ fn test_enable_two_factor_forbidden_does_not_persist() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: "victim".to_string(),
-            email: "victim@petchain.com".to_string(),
+            email: "victim@healthy-lab.example".to_string(),
         },
     );
 

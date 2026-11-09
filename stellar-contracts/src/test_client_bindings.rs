@@ -12,8 +12,8 @@ mod test_client_bindings {
         env.mock_all_auths();
         env.budget().reset_unlimited();
 
-        let contract_id = env.register_contract(None, PetChainContract);
-        let client = PetChainContractClient::new(&env, &contract_id);
+        let contract_id = env.register_contract(None, HealthyLabContract);
+        let client = HealthyLabContractClient::new(&env, &contract_id);
 
         // --- Write: register a pet ---
         let owner = Address::generate(&env);
@@ -53,8 +53,8 @@ mod test_client_bindings {
         env.mock_all_auths();
         env.budget().reset_unlimited();
 
-        let contract_id = env.register_contract(None, PetChainContract);
-        let client = PetChainContractClient::new(&env, &contract_id);
+        let contract_id = env.register_contract(None, HealthyLabContract);
+        let client = HealthyLabContractClient::new(&env, &contract_id);
 
         let version = client.get_version();
         // The version must be at least 1 (initial schema)

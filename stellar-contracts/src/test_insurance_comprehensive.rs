@@ -1,4 +1,4 @@
-use crate::{Gender, PetChainContract, PetChainContractClient, PremiumTier, PrivacyLevel, Species};
+use crate::{Gender, HealthyLabContract, HealthyLabContractClient, PremiumTier, PrivacyLevel, Species};
 use soroban_sdk::{testutils::Address as _, Address, Env, String};
 
 #[test]
@@ -6,8 +6,8 @@ fn test_add_insurance_policy() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
 
@@ -43,8 +43,8 @@ fn test_get_pet_insurance() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
 
@@ -90,8 +90,8 @@ fn test_update_insurance_status() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
 
@@ -158,8 +158,8 @@ fn test_insurance_for_nonexistent_pet() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let expiry = env.ledger().timestamp() + 31536000;
     let result = client.add_insurance_policy(
@@ -180,8 +180,8 @@ fn test_get_insurance_for_pet_without_policy() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
 
@@ -207,8 +207,8 @@ fn test_update_nonexistent_insurance() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
 
@@ -239,8 +239,8 @@ fn test_insurance_policy_fields() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
 
@@ -296,8 +296,8 @@ fn test_multiple_policies_per_pet() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
 
     let pet_id = client.register_pet(
@@ -337,8 +337,8 @@ fn test_multiple_policies_per_pet() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
 
     let pet_id = client.register_pet(
@@ -372,8 +372,8 @@ fn test_get_pet_insurance_returns_latest_policy() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
 
@@ -415,8 +415,8 @@ fn test_premium_estimate_increases_by_tier() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
 
     let pet_id = client.register_pet(
@@ -454,8 +454,8 @@ fn test_get_all_pet_policies_empty() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
 
     let pet_id = client.register_pet(
@@ -480,8 +480,8 @@ fn test_policies_independent_across_pets() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let expiry = env.ledger().timestamp() + 31536000;
@@ -566,8 +566,8 @@ fn test_update_insurance_status_targets_specific_policy() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
 
@@ -646,7 +646,7 @@ use crate::{
 
 fn register_enrollment_pet(
     env: &Env,
-    client: &PetChainContractClient,
+    client: &HealthyLabContractClient,
     owner: &Address,
     name: &str,
 ) -> u64 {
@@ -677,8 +677,8 @@ fn test_enrollment_full_happy_path_binds_policy_version() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
     let pet_id = register_enrollment_pet(&env, &client, &owner, "Enroll");
 
@@ -729,8 +729,8 @@ fn test_enrollment_decline_path() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
     let pet_id = register_enrollment_pet(&env, &client, &owner, "Decline");
 
@@ -767,8 +767,8 @@ fn test_enrollment_unauthorized_access_rejected_and_state_unchanged() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
     let attacker = Address::generate(&env);
     let pet_id = register_enrollment_pet(&env, &client, &owner, "Auth");
@@ -805,8 +805,8 @@ fn test_enrollment_invalid_transition_leaves_state_unchanged() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
     let pet_id = register_enrollment_pet(&env, &client, &owner, "Transition");
 
@@ -851,8 +851,8 @@ fn test_enrollment_replay_after_decision_rejected() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
     let pet_id = register_enrollment_pet(&env, &client, &owner, "Replay");
 
@@ -900,8 +900,8 @@ fn test_enrollment_coverage_items_bounded() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
     let pet_id = register_enrollment_pet(&env, &client, &owner, "Bounds");
 
@@ -942,8 +942,8 @@ fn test_enrollment_page_size_bounded() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
     let pet_id = register_enrollment_pet(&env, &client, &owner, "Paging");
 
@@ -978,8 +978,8 @@ fn test_coverage_snapshot_immutable_after_policy_change() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
     let pet_id = register_enrollment_pet(&env, &client, &owner, "Snapshot");
 
@@ -1029,8 +1029,8 @@ fn test_update_insurance_status_unknown_policy_id_returns_false() {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
 

@@ -1,11 +1,11 @@
 // Tests for cursor-based access-grant enumeration (Issue #1161).
-use crate::{AccessLevel, Gender, PetChainContract, PetChainContractClient, PrivacyLevel, Species};
+use crate::{AccessLevel, Gender, HealthyLabContract, HealthyLabContractClient, PrivacyLevel, Species};
 use soroban_sdk::{testutils::{Address as _, Ledger as _}, Address, Env, String};
 
-fn setup(env: &Env) -> (PetChainContractClient<'_>, Address, u64) {
+fn setup(env: &Env) -> (HealthyLabContractClient<'_>, Address, u64) {
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(env, &contract_id);
 
     let owner = Address::generate(env);
 
@@ -26,7 +26,7 @@ fn setup(env: &Env) -> (PetChainContractClient<'_>, Address, u64) {
 }
 
 fn grant(
-    client: &PetChainContractClient<'_>,
+    client: &HealthyLabContractClient<'_>,
     env: &Env,
     owner: &Address,
     pet_id: u64,

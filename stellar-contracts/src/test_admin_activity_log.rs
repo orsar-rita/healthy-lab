@@ -1,9 +1,9 @@
-use crate::{ContractError, PetChainContract, PetChainContractClient};
+use crate::{ContractError, HealthyLabContract, HealthyLabContractClient};
 use soroban_sdk::{testutils::Address as _, vec, Address, Env, String};
 
-fn setup(env: &Env) -> (PetChainContractClient, Address, Address) {
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(env, &contract_id);
+fn setup(env: &Env) -> (HealthyLabContractClient, Address, Address) {
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(env, &contract_id);
 
     let admin1 = Address::generate(env);
     let admin2 = Address::generate(env);

@@ -1,7 +1,7 @@
 //! Storage-rent and cleanup observability (Issue #1258).
 
 use crate::{
-    ContractError, Gender, PetChainContract, PetChainContractClient, PrivacyLevel, Species,
+    ContractError, Gender, HealthyLabContract, HealthyLabContractClient, PrivacyLevel, Species,
     StorageMetrics, MAX_STORAGE_METRICS_SCAN,
 };
 use soroban_sdk::{
@@ -13,7 +13,7 @@ const RETENTION: u64 = 100;
 
 struct Ctx<'a> {
     env: Env,
-    client: PetChainContractClient<'a>,
+    client: HealthyLabContractClient<'a>,
     admin: Address,
     owner: Address,
     vet: Address,
@@ -23,7 +23,7 @@ struct Ctx<'a> {
 fn setup<'a>() -> Ctx<'a> {
     let env = Env::default();
     env.mock_all_auths();
-    let client = PetChainContractClient::new(&env, &env.register_contract(None, PetChainContract));
+    let client = HealthyLabContractClient::new(&env, &env.register_contract(None, HealthyLabContract));
     let (admin, owner, vet) = (
         Address::generate(&env),
         Address::generate(&env),

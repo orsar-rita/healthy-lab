@@ -28,7 +28,7 @@
 //! are used anywhere in this file.
 
 use crate::{
-    ContractError, Gender, InsuranceClaimStatus, PetChainContract, PetChainContractClient,
+    ContractError, Gender, InsuranceClaimStatus, HealthyLabContract, HealthyLabContractClient,
     PrivacyLevel, Species,
 };
 use soroban_sdk::{
@@ -41,18 +41,18 @@ use soroban_sdk::{
 // ---------------------------------------------------------------------------
 
 /// Register a pet with a fresh owner and return (client, owner, pet_id).
-fn setup_env() -> (Env, PetChainContractClient<'static>, Address) {
+fn setup_env() -> (Env, HealthyLabContractClient<'static>, Address) {
     let env = Env::default();
     env.mock_all_auths();
     env.budget().reset_unlimited();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let admin = Address::generate(&env);
     client.init_admin(&admin);
     (env, client, admin)
 }
 
-fn register_pet_with_policy(env: &Env, client: &PetChainContractClient) -> (Address, u64) {
+fn register_pet_with_policy(env: &Env, client: &HealthyLabContractClient) -> (Address, u64) {
     let owner = Address::generate(env);
     let pet_id = client.register_pet(
         &owner,

@@ -1,9 +1,9 @@
-use crate::{Gender, PetChainContract, PetChainContractClient, PrivacyLevel, Species};
+use crate::{Gender, HealthyLabContract, HealthyLabContractClient, PrivacyLevel, Species};
 use soroban_sdk::{testutils::Address as _, Address, Env, String};
 
 // ── helpers ────────────────────────────────────────────────────────────────
 
-fn register_pet(env: &Env, client: &PetChainContractClient, owner: &Address, name: &str) -> u64 {
+fn register_pet(env: &Env, client: &HealthyLabContractClient, owner: &Address, name: &str) -> u64 {
     client.register_pet(
         owner,
         &String::from_str(env, name),
@@ -22,7 +22,7 @@ fn register_pet(env: &Env, client: &PetChainContractClient, owner: &Address, nam
 /// Returns the breeding record id.
 fn breed_and_assign(
     env: &Env,
-    client: &PetChainContractClient,
+    client: &HealthyLabContractClient,
     sire_id: u64,
     dam_id: u64,
     offspring_id: u64,
@@ -43,8 +43,8 @@ fn breed_and_assign(
 fn test_coi_unrelated_pair_returns_zero() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
 
     // Two completely unrelated pets
@@ -61,8 +61,8 @@ fn test_coi_unrelated_pair_returns_zero() {
 fn test_coi_half_siblings_returns_1250() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
 
     // Grand-sire is the shared ancestor
@@ -91,8 +91,8 @@ fn test_coi_half_siblings_returns_1250() {
 fn test_coi_first_cousins_full_siblings_returns_624() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
 
     // Grandparents (shared ancestors)
@@ -143,8 +143,8 @@ fn test_coi_first_cousins_full_siblings_returns_624() {
 fn test_register_breeding_pair_rejects_high_coi() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
 
     // Create half-siblings (COI = 1250)
@@ -172,8 +172,8 @@ fn test_register_breeding_pair_rejects_high_coi() {
 fn test_register_breeding_pair_allows_unrelated() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
 
     let sire = register_pet(&env, &client, &owner, "Sire");
@@ -200,8 +200,8 @@ fn test_register_breeding_pair_allows_unrelated() {
 fn test_register_breeding_pair_rejects_self_breeding() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
 
     let pet = register_pet(&env, &client, &owner, "Self");

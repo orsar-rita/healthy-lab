@@ -6,19 +6,19 @@ mod test_pet_deactivation_lifecycle {
         Env,
     };
 
-    fn setup() -> (Env, PetChainContractClient<'static>, Address) {
+    fn setup() -> (Env, HealthyLabContractClient<'static>, Address) {
         let env = Env::default();
         env.mock_all_auths();
         env.budget().reset_unlimited();
-        let contract_id = env.register_contract(None, PetChainContract);
-        let client = PetChainContractClient::new(&env, &contract_id);
+        let contract_id = env.register_contract(None, HealthyLabContract);
+        let client = HealthyLabContractClient::new(&env, &contract_id);
         let owner = Address::generate(&env);
         (env, client, owner)
     }
 
     fn register_active_pet(
         env: &Env,
-        client: &PetChainContractClient<'static>,
+        client: &HealthyLabContractClient<'static>,
         owner: &Address,
     ) -> u64 {
         let pet_id = client.register_pet(

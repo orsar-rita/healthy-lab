@@ -14,7 +14,7 @@
 // ============================================================
 
 use crate::{
-    AccessLevel, Gender, PetChainContract, PetChainContractClient, PrivacyLevel, Species,
+    AccessLevel, Gender, HealthyLabContract, HealthyLabContractClient, PrivacyLevel, Species,
 };
 use soroban_sdk::{
     testutils::{Address as _, Events, Ledger},
@@ -29,10 +29,10 @@ use soroban_sdk::{
 /// every linked domain (medical records, vaccinations, access grants,
 /// behaviour, activity, breeding, custody) so that deletion
 /// invariants can be asserted across all of them.
-fn setup_full_lifecycle(env: &Env) -> (PetChainContractClient<'_>, Address, Address, u64) {
+fn setup_full_lifecycle(env: &Env) -> (HealthyLabContractClient<'_>, Address, Address, u64) {
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(env, &contract_id);
 
     let admin = Address::generate(env);
     let vet = Address::generate(env);
@@ -163,10 +163,10 @@ mod test_cross_domain_deletion_invariants {
         let (client, _owner, _vet, pet_id) = setup_full_lifecycle(&env);
 
         client.activate_pet(&pet_id);
-        let active_before = PetChainContract::get_active_pets_count(&env);
+        let active_before = HealthyLabContract::get_active_pets_count(&env);
 
         client.deactivate_pet(&pet_id);
-        let active_after = PetChainContract::get_active_pets_count(&env);
+        let active_after = HealthyLabContract::get_active_pets_count(&env);
 
         assert_eq!(active_after, active_before - 1);
     }
@@ -177,10 +177,10 @@ mod test_cross_domain_deletion_invariants {
         let (client, _owner, _vet, pet_id) = setup_full_lifecycle(&env);
 
         client.activate_pet(&pet_id);
-        let active_before = PetChainContract::get_active_pets_count(&env);
+        let active_before = HealthyLabContract::get_active_pets_count(&env);
 
         client.archive_pet(&pet_id);
-        let active_after = PetChainContract::get_active_pets_count(&env);
+        let active_after = HealthyLabContract::get_active_pets_count(&env);
 
         assert_eq!(active_after, active_before - 1);
     }
@@ -191,7 +191,7 @@ mod test_cross_domain_deletion_invariants {
         let (client, _owner, _vet, pet_id) = setup_full_lifecycle(&env);
 
         client.deactivate_pet(&pet_id);
-        assert!(!PetChainContract::is_pet_active(env.clone(), pet_id));
+        assert!(!HealthyLabContract::is_pet_active(env.clone(), pet_id));
     }
 
     #[test]
@@ -200,7 +200,7 @@ mod test_cross_domain_deletion_invariants {
         let (client, _owner, _vet, pet_id) = setup_full_lifecycle(&env);
 
         client.archive_pet(&pet_id);
-        assert!(!PetChainContract::is_pet_active(env.clone(), pet_id));
+        assert!(!HealthyLabContract::is_pet_active(env.clone(), pet_id));
     }
 
     #[test]
@@ -209,10 +209,10 @@ mod test_cross_domain_deletion_invariants {
         let (client, _owner, _vet, pet_id) = setup_full_lifecycle(&env);
 
         client.deactivate_pet(&pet_id);
-        let active_after_deact = PetChainContract::get_active_pets_count(&env);
+        let active_after_deact = HealthyLabContract::get_active_pets_count(&env);
 
         client.activate_pet(&pet_id);
-        let active_after_react = PetChainContract::get_active_pets_count(&env);
+        let active_after_react = HealthyLabContract::get_active_pets_count(&env);
 
         assert_eq!(active_after_react, active_after_deact + 1);
     }
@@ -223,10 +223,10 @@ mod test_cross_domain_deletion_invariants {
         let (client, owner, _vet, pet_id) = setup_full_lifecycle(&env);
 
         client.activate_pet(&pet_id);
-        let count_before = PetChainContract::get_owner_pet_count(&env, &owner);
+        let count_before = HealthyLabContract::get_owner_pet_count(&env, &owner);
 
         client.deactivate_pet(&pet_id);
-        let count_after = PetChainContract::get_owner_pet_count(&env, &owner);
+        let count_after = HealthyLabContract::get_owner_pet_count(&env, &owner);
 
         assert_eq!(count_after, count_before - 1);
     }
@@ -237,10 +237,10 @@ mod test_cross_domain_deletion_invariants {
         let (client, owner, _vet, pet_id) = setup_full_lifecycle(&env);
 
         client.activate_pet(&pet_id);
-        let count_before = PetChainContract::get_owner_pet_count(&env, &owner);
+        let count_before = HealthyLabContract::get_owner_pet_count(&env, &owner);
 
         client.archive_pet(&pet_id);
-        let count_after = PetChainContract::get_owner_pet_count(&env, &owner);
+        let count_after = HealthyLabContract::get_owner_pet_count(&env, &owner);
 
         assert_eq!(count_after, count_before - 1);
     }
@@ -251,10 +251,10 @@ mod test_cross_domain_deletion_invariants {
         let (client, _owner, _vet, pet_id) = setup_full_lifecycle(&env);
 
         client.activate_pet(&pet_id);
-        let count_before = PetChainContract::get_species_pet_count(&env, &Species::Dog);
+        let count_before = HealthyLabContract::get_species_pet_count(&env, &Species::Dog);
 
         client.deactivate_pet(&pet_id);
-        let count_after = PetChainContract::get_species_pet_count(&env, &Species::Dog);
+        let count_after = HealthyLabContract::get_species_pet_count(&env, &Species::Dog);
 
         assert_eq!(count_after, count_before - 1);
     }
@@ -265,10 +265,10 @@ mod test_cross_domain_deletion_invariants {
         let (client, _owner, _vet, pet_id) = setup_full_lifecycle(&env);
 
         client.activate_pet(&pet_id);
-        let count_before = PetChainContract::get_species_pet_count(&env, &Species::Dog);
+        let count_before = HealthyLabContract::get_species_pet_count(&env, &Species::Dog);
 
         client.archive_pet(&pet_id);
-        let count_after = PetChainContract::get_species_pet_count(&env, &Species::Dog);
+        let count_after = HealthyLabContract::get_species_pet_count(&env, &Species::Dog);
 
         assert_eq!(count_after, count_before - 1);
     }
@@ -465,7 +465,7 @@ mod test_cross_domain_deletion_invariants {
 
         // Revoked grant must not authorize access even though the pet is
         // now deleted/deactivated — the orphaned index entry is inert.
-        let access = PetChainContract::check_access(env.clone(), pet_id, grantee);
+        let access = HealthyLabContract::check_access(env.clone(), pet_id, grantee);
         assert_eq!(access, AccessLevel::None);
     }
 
@@ -492,7 +492,7 @@ mod test_cross_domain_deletion_invariants {
 
         // Expired grant must not authorize access even though the pet is
         // now deleted/deactivated — the orphaned index entry is inert.
-        let access = PetChainContract::check_access(env.clone(), pet_id, grantee);
+        let access = HealthyLabContract::check_access(env.clone(), pet_id, grantee);
         assert_eq!(access, AccessLevel::None);
     }
 
@@ -509,7 +509,7 @@ mod test_cross_domain_deletion_invariants {
         // Even though the grant entry may still exist in storage until
         // compact_storage runs, check_access must return None for a
         // deleted pet — no orphaned index can authorize access.
-        let access = PetChainContract::check_access(env.clone(), pet_id, grantee);
+        let access = HealthyLabContract::check_access(env.clone(), pet_id, grantee);
         assert_eq!(access, AccessLevel::None);
     }
 
@@ -521,7 +521,7 @@ mod test_cross_domain_deletion_invariants {
         client.archive_pet(&pet_id);
 
         // Archived pets must not appear in any active query
-        assert!(!PetChainContract::is_pet_active(env.clone(), pet_id));
+        assert!(!HealthyLabContract::is_pet_active(env.clone(), pet_id));
 
         // Historical queries should still find the pet
         let pet = client.get_pet(&pet_id).unwrap();
@@ -538,13 +538,13 @@ mod test_cross_domain_deletion_invariants {
         client.activate_pet(&pet_id);
 
         // All indexes should be consistent after reactivation
-        assert!(PetChainContract::is_pet_active(env.clone(), pet_id));
+        assert!(HealthyLabContract::is_pet_active(env.clone(), pet_id));
 
         let owner = client.get_pet(&pet_id).unwrap().owner;
-        let owner_count = PetChainContract::get_owner_pet_count(&env, &owner);
+        let owner_count = HealthyLabContract::get_owner_pet_count(&env, &owner);
         assert!(owner_count > 0);
 
-        let species_count = PetChainContract::get_species_pet_count(&env, &Species::Dog);
+        let species_count = HealthyLabContract::get_species_pet_count(&env, &Species::Dog);
         assert!(species_count > 0);
     }
 

@@ -1,6 +1,6 @@
-# PetChain 2FA – Configuration Guide
+# Healthy Lab 2FA – Configuration Guide
 
-This document covers runtime configuration for the `petchain-2fa` crate, with a
+This document covers runtime configuration for the `healthy-lab-2fa` crate, with a
 dedicated section on CORS for teams integrating a browser-based SPA client.
 
 ---
@@ -122,8 +122,8 @@ Typical values:
 | Environment | `CORS_ALLOWED_ORIGIN` |
 |---|---|
 | Local development | `http://localhost:5173` |
-| Staging | `https://staging.petchain.example.com` |
-| Production | `https://app.petchain.example.com` |
+| Staging | `https://staging.healthy-lab.example` |
+| Production | `https://app.healthy-lab.example` |
 
 ### 2.4 Security considerations
 
@@ -148,7 +148,7 @@ origin explicitly:
 
 ```rust
 Cors::default()
-    .allowed_origin("https://app.petchain.example.com")
+    .allowed_origin("https://app.healthy-lab.example")
     .supports_credentials() // only safe with an explicit origin
 ```
 
@@ -183,8 +183,8 @@ on a different domain), list them individually rather than using a wildcard:
 
 ```rust
 Cors::default()
-    .allowed_origin("https://app.petchain.example.com")
-    .allowed_origin("https://mobile.petchain.example.com")
+    .allowed_origin("https://app.healthy-lab.example")
+    .allowed_origin("https://mobile.healthy-lab.example")
     .allowed_methods(vec!["POST", "OPTIONS"])
     .allowed_headers(vec![
         http::header::CONTENT_TYPE,
@@ -200,8 +200,8 @@ use actix_web::http::header::HeaderValue;
 
 Cors::default()
     .allowed_origin_fn(|origin: &HeaderValue, _req_head| {
-        let allowed = ["https://app.petchain.example.com",
-                       "https://mobile.petchain.example.com"];
+        let allowed = ["https://app.healthy-lab.example",
+                       "https://mobile.healthy-lab.example"];
         origin.to_str()
             .map(|o| allowed.contains(&o))
             .unwrap_or(false)
@@ -248,7 +248,7 @@ staging and production where the SPA and the API are on different origins.
 
 ## 3. Rate limiting
 
-The `petchain-2fa` crate ships a `rate_limit_middleware` module. Configure
+The `healthy-lab-2fa` crate ships a `rate_limit_middleware` module. Configure
 thresholds via environment variables or directly in the `RateLimitConfig` struct.
 
 Recommended minimums for 2FA endpoints:
@@ -270,10 +270,10 @@ details.
 
 | Variable | Required | Example | Description |
 |---|---|---|---|
-| `CORS_ALLOWED_ORIGIN` | Yes (browser clients) | `https://app.petchain.example.com` | Single explicit origin allowed to call the API from a browser. |
-| `DATABASE_URL` | Yes | `postgres://user:pass@localhost/petchain_db` | PostgreSQL connection string. |
+| `CORS_ALLOWED_ORIGIN` | Yes (browser clients) | `https://app.healthy-lab.example` | Single explicit origin allowed to call the API from a browser. |
+| `DATABASE_URL` | Yes | `postgres://user:pass@localhost/healthy_lab_db` | PostgreSQL connection string. |
 | `JWT_SECRET` | Yes | `<random 32-byte hex>` | Secret for signing JWT tokens. |
-| `RUST_LOG` | No | `info,petchain_2fa=debug` | Log level filter for `tracing-subscriber`. |
+| `RUST_LOG` | No | `info,healthy_lab_2fa=debug` | Log level filter for `tracing-subscriber`. |
 | `RATE_LIMIT_MAX_REQUESTS` | No | `5` | Override default rate-limit threshold. |
 | `RATE_LIMIT_WINDOW_SECS` | No | `60` | Override rate-limit window in seconds. |
 

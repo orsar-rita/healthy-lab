@@ -1,4 +1,4 @@
-name: PetChain Stellar Contracts
+name: Healthy Lab Stellar Contracts
 
 on:
   workflow_dispatch:

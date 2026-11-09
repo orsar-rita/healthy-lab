@@ -3,7 +3,7 @@
 //
 // `get_medical_record_hash` computes a deterministic, versioned commitment
 // over a medical record's clinical fields (see
-// `PetChainContract::canonical_medical_record_preimage` for the exact
+// `HealthyLabContract::canonical_medical_record_preimage` for the exact
 // encoding). These tests document:
 //   - Determinism: hashing the same record twice yields the same digest.
 //   - Sensitivity: changing a clinical field (e.g. diagnosis) changes the
@@ -13,14 +13,14 @@
 // ============================================================
 
 use crate::{
-    Gender, Medication, PetChainContract, PetChainContractClient, PrivacyLevel, Species,
+    Gender, Medication, HealthyLabContract, HealthyLabContractClient, PrivacyLevel, Species,
 };
 use soroban_sdk::{testutils::Address as _, Address, Env, String, Vec};
 
-fn setup(env: &Env) -> (PetChainContractClient<'static>, Address, Address, u64) {
+fn setup(env: &Env) -> (HealthyLabContractClient<'static>, Address, Address, u64) {
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(env, &contract_id);
 
     let admin = Address::generate(env);
     let vet = Address::generate(env);
@@ -55,7 +55,7 @@ fn setup(env: &Env) -> (PetChainContractClient<'static>, Address, Address, u64) 
 
 fn add_record(
     env: &Env,
-    client: &PetChainContractClient<'static>,
+    client: &HealthyLabContractClient<'static>,
     vet: &Address,
     pet_id: u64,
     diagnosis: &str,

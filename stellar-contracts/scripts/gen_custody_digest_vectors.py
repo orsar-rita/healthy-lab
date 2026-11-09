@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Reference implementation for the PetChain custody-chain canonical digest.
+Reference implementation for the Healthy Lab custody-chain canonical digest.
 
 This script reproduces, byte-for-byte, the canonical serialisation used by
-`PetChainContract::get_custody_chain_digest` (see stellar-contracts/src/lib.rs)
+`HealthyLabContract::get_custody_chain_digest` (see stellar-contracts/src/lib.rs)
 and prints the published vectors asserted in
 stellar-contracts/src/test_custody_digest.rs.
 

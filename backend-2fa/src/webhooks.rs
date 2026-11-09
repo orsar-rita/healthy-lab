@@ -14,7 +14,7 @@ use std::time::{Duration, SystemTime, UNIX_EPOCH};
 type HmacSha256 = Hmac<Sha256>;
 
 /// Header under which the webhook signature is sent.
-pub const SIGNATURE_HEADER: &str = "X-PetChain-Signature";
+pub const SIGNATURE_HEADER: &str = "X-Healthy Lab-Signature";
 
 /// Default maximum number of entries retained in the delivery log.
 /// Override with the `WEBHOOK_LOG_MAX_ENTRIES` environment variable.
@@ -600,7 +600,7 @@ pub struct WebhookManager {
     http_client: Arc<dyn HttpClient>,
     /// When true, allow http:// URLs (for test/dev environments).
     allow_http: bool,
-    /// HMAC-SHA256 signing secret used to compute `X-PetChain-Signature` headers.
+    /// HMAC-SHA256 signing secret used to compute `X-Healthy Lab-Signature` headers.
     /// Empty string disables signing.
     signing_secret: String,
     retry_policy: RetryPolicy,

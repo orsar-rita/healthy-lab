@@ -1,5 +1,5 @@
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion};
-use petchain_2fa::rate_limiter::{InMemoryRateLimiter, RateLimiter};
+use healthy_lab_2fa::rate_limiter::{InMemoryRateLimiter, RateLimiter};
 use std::sync::Arc;
 use std::thread;
 

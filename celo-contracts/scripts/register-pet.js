@@ -10,7 +10,7 @@ const hre = require("hardhat");
 //   OWNER_ADDRESS    - owner of the pet record (defaults to the signer)
 //   VET_ADDRESS      - vet address recorded for the pet (defaults to the signer)
 //   CHIP_ID          - unique chip identifier (defaults to a deterministic value)
-const MANIFEST_PATH = path.join(__dirname, "..", "deployments", "PetChainRegistry.json");
+const MANIFEST_PATH = path.join(__dirname, "..", "deployments", "HealthyLabRegistry.json");
 
 function loadManifest() {
   if (!fs.existsSync(MANIFEST_PATH)) {
@@ -49,11 +49,11 @@ async function main() {
 
   const contractAddress = process.env.CONTRACT_ADDRESS || manifest.address;
   if (!contractAddress) {
-    throw new Error("Set CONTRACT_ADDRESS to the deployed PetChainRegistry address");
+    throw new Error("Set CONTRACT_ADDRESS to the deployed HealthyLabRegistry address");
   }
 
   const [signer] = await hre.ethers.getSigners();
-  const registry = await hre.ethers.getContractAt("PetChainRegistry", contractAddress);
+  const registry = await hre.ethers.getContractAt("HealthyLabRegistry", contractAddress);
 
   const owner = process.env.OWNER_ADDRESS || signer.address;
   const vet = process.env.VET_ADDRESS || signer.address;

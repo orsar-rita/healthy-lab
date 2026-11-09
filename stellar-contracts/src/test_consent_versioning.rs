@@ -1,17 +1,17 @@
 use crate::*;
 use soroban_sdk::{testutils::Address as _, Env};
 
-fn setup() -> (Env, PetChainContractClient<'static>, Address) {
+fn setup() -> (Env, HealthyLabContractClient<'static>, Address) {
     let env = Env::default();
     env.mock_all_auths();
-    let id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &id);
+    let id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &id);
     let admin = Address::generate(&env);
     client.init_admin(&admin);
     (env, client, admin)
 }
 
-fn seed_consent(env: &Env, client: &PetChainContractClient, owner: &Address) {
+fn seed_consent(env: &Env, client: &HealthyLabContractClient, owner: &Address) {
     env.as_contract(&client.address, || {
         env.storage().instance().set(
             &ConsentKey::Consent(1),

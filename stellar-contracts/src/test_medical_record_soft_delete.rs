@@ -8,10 +8,10 @@ use soroban_sdk::{
 // Helpers
 // ---------------------------------------------------------------------------
 
-fn setup(env: &Env) -> (PetChainContractClient<'_>, Address, Address, u64) {
+fn setup(env: &Env) -> (HealthyLabContractClient<'_>, Address, Address, u64) {
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(env, &contract_id);
 
     let admin = Address::generate(env);
     let vet = Address::generate(env);
@@ -43,7 +43,7 @@ fn setup(env: &Env) -> (PetChainContractClient<'_>, Address, Address, u64) {
 }
 
 fn add_record(
-    client: &PetChainContractClient<'_>,
+    client: &HealthyLabContractClient<'_>,
     env: &Env,
     vet: &Address,
     pet_id: u64,
@@ -246,8 +246,8 @@ fn test_admin_purge_after_retention_succeeds() {
     // we need the admin address. Use a fresh env to get the admin.
     let env2 = Env::default();
     env2.mock_all_auths();
-    let contract_id2 = env2.register_contract(None, PetChainContract);
-    let client2 = PetChainContractClient::new(&env2, &contract_id2);
+    let contract_id2 = env2.register_contract(None, HealthyLabContract);
+    let client2 = HealthyLabContractClient::new(&env2, &contract_id2);
     let admin2 = Address::generate(&env2);
     let vet2 = Address::generate(&env2);
     let owner2 = Address::generate(&env2);
@@ -298,9 +298,9 @@ fn test_custom_retention_period_respected() {
     let env = Env::default();
     env.ledger().with_mut(|l| l.timestamp = 1_700_000_000);
 
-    let contract_id = env.register_contract(None, PetChainContract);
+    let contract_id = env.register_contract(None, HealthyLabContract);
     env.mock_all_auths();
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let admin = Address::generate(&env);
     let vet = Address::generate(&env);
     let owner = Address::generate(&env);

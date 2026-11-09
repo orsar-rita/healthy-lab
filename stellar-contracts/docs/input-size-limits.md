@@ -34,9 +34,9 @@ and advances no counter.
 |---|---|---|
 | `register_pet` | `color` | `MAX_COLOR_LEN = 50` bytes |
 | `register_pet` | `name` | validated by `validate_pet_name` (non-empty, non-huge) |
-| `register_vet` | `name` | `PetChainContract::MAX_VET_NAME_LEN = 100` bytes |
-| `register_vet` | `license_number` | `PetChainContract::MAX_VET_LICENSE_LEN = 50` bytes |
-| `register_vet` | `specialization` | `PetChainContract::MAX_VET_SPEC_LEN = 100` bytes |
+| `register_vet` | `name` | `HealthyLabContract::MAX_VET_NAME_LEN = 100` bytes |
+| `register_vet` | `license_number` | `HealthyLabContract::MAX_VET_LICENSE_LEN = 50` bytes |
+| `register_vet` | `specialization` | `HealthyLabContract::MAX_VET_SPEC_LEN = 100` bytes |
 | `add_behavior_record` | `description` | `MAX_BEHAVIOR_DESC_LEN = 500` bytes |
 | `add_activity_record` | `notes` | `MAX_ACTIVITY_NOTES_LEN = 500` bytes |
 | `add_medical_record` | `diagnosis` | `MAX_MEDICAL_DIAGNOSIS_LEN = 500` bytes |
@@ -93,7 +93,7 @@ entries are `String`s bounded by `MAX_COVERAGE_ITEM_LEN = 100` bytes and
   stability-pinned list — do not treat these numbers as reorderable).
 - **Exposed limits.** Module-level `MAX_*` constants are re-usable from the
   crate root; vet limits are exposed as associated constants
-  (`PetChainContract::MAX_VET_NAME_LEN`, `MAX_VET_LICENSE_LEN`,
+  (`HealthyLabContract::MAX_VET_NAME_LEN`, `MAX_VET_LICENSE_LEN`,
   `MAX_VET_SPEC_LEN`).
 
 ## Test coverage

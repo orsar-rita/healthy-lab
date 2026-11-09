@@ -3,7 +3,7 @@
 ## Repository Layout
 
 ```text
-PetChain-Contracts/
+healthy-lab/
 ├── README.md
 ├── SECURITY.md
 ├── CONTRIBUTING.md
@@ -35,7 +35,7 @@ PetChain-Contracts/
 
 ### `stellar-contracts`
 
-The main Soroban contract crate. It contains the primary PetChain smart contract, including:
+The main Soroban contract crate. It contains the primary Healthy Lab smart contract, including:
 
 - pet registration and ownership
 - veterinary access control

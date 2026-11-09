@@ -1566,7 +1566,7 @@ mod tests {
     ///   AWS_ACCESS_KEY_ID=test \
     ///   AWS_SECRET_ACCESS_KEY=test \
     ///   AWS_REGION=us-east-1 \
-    ///   AWS_TEST_SECRET_NAME=petchain-test-secret \
+    ///   AWS_TEST_SECRET_NAME=healthy-lab-test-secret \
     ///   cargo test aws_secrets_manager_integration -- --nocapture
     #[test]
     fn aws_secrets_manager_integration() {

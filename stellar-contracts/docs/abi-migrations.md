@@ -1,6 +1,6 @@
 # Contract ABI & Storage-Key Migration Notes
 
-This file is the changelog for **intentional** changes to the PetChain
+This file is the changelog for **intentional** changes to the Healthy Lab
 Soroban contract's public interface (`stellar-contracts/src/lib.rs`).
 
 Three automated guards exist to catch *unintentional* changes:

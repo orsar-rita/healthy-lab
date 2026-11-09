@@ -1,6 +1,11 @@
-# PetChain
+# Healthy Lab
 
-PetChain is a decentralized pet health record platform built on Stellar Soroban smart contracts.
+Healthy Lab is a decentralized pet health record platform built on Stellar Soroban smart contracts.
+
+Compatibility note: versioned storage, Redis, encryption, and commitment domain
+identifiers are persisted protocol values. They retain their original byte
+encoding across this project rename so existing data and on-chain proofs remain
+readable.
 
 ## Soroban Resource-Budget Regression Checks
 

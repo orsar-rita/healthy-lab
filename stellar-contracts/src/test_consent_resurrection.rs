@@ -8,7 +8,7 @@
 //! generation ≥ 1 forever.
 
 use crate::{
-    ConsentKey, ConsentScope, ConsentType, Gender, PetChainContract, PetChainContractClient,
+    ConsentKey, ConsentScope, ConsentType, Gender, HealthyLabContract, HealthyLabContractClient,
     PrivacyLevel, Species,
 };
 use soroban_sdk::{
@@ -16,9 +16,9 @@ use soroban_sdk::{
     Address, Env, String, Vec,
 };
 
-fn setup(env: &Env) -> (PetChainContractClient<'_>, Address, u64) {
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(env, &contract_id);
+fn setup(env: &Env) -> (HealthyLabContractClient<'_>, Address, u64) {
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(env, &contract_id);
     let owner = Address::generate(env);
     let pet_id = client.register_pet(
         &owner,
@@ -153,8 +153,8 @@ fn test_extend_revoked_consent_rejected() {
 #[test]
 fn test_new_consent_generation_is_zero() {
     let env = make_env();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
     let pet_id = client.register_pet(
         &owner,
@@ -183,8 +183,8 @@ fn test_new_consent_generation_is_zero() {
 #[test]
 fn test_revocation_bumps_generation_to_one() {
     let env = make_env();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
     let pet_id = client.register_pet(
         &owner,
@@ -228,8 +228,8 @@ fn test_double_revoke_is_idempotent() {
 #[should_panic]
 fn test_consent_id_counter_overflow_panics() {
     let env = make_env();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
     let pet_id = client.register_pet(
         &owner,

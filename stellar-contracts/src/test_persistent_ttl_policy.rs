@@ -4,7 +4,7 @@
 // Persistent-storage entries (breeding records, access logs, ...) are not
 // kept alive automatically by contract invocations the way instance storage
 // is: their TTL must be extended explicitly on write, or the ledger can
-// archive/expire them out from under the contract. `PetChainContract`
+// archive/expire them out from under the contract. `HealthyLabContract`
 // bumps the TTL of every persistent entry it writes via
 // `bump_persistent_ttl`, using the `PERSISTENT_TTL_THRESHOLD` /
 // `PERSISTENT_TTL_EXTEND_TO` policy constants. These tests assert that a
@@ -12,12 +12,12 @@
 // extended out to (at least) the policy's `extend_to` value.
 // ============================================================
 
-use crate::{BreedingKey, PetChainContract, PetChainContractClient};
+use crate::{BreedingKey, HealthyLabContract, HealthyLabContractClient};
 use soroban_sdk::{testutils::storage::Persistent as _, Env, String};
 
-fn make_client(env: &Env) -> PetChainContractClient<'static> {
-    let contract_id = env.register_contract(None, PetChainContract);
-    PetChainContractClient::new(env, &contract_id)
+fn make_client(env: &Env) -> HealthyLabContractClient<'static> {
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    HealthyLabContractClient::new(env, &contract_id)
 }
 
 /// Writing a breeding record extends its persistent TTL to at least

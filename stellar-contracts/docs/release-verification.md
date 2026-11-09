@@ -1,6 +1,6 @@
 # Release Verification
 
-This document describes the reproducible release archive verification process for the PetChain Stellar contracts.
+This document describes the reproducible release archive verification process for the Healthy Lab Stellar contracts.
 
 ## Overview
 
@@ -111,7 +111,7 @@ The reproducibility check runs as part of the `stellar-contracts` CI workflow:
 3. Ensure deployment manifest is valid: `bash scripts/validate_manifest.sh --strict`
 4. Create and push a tag: `git tag vX.Y.Z && git push origin vX.Y.Z`
 5. The release workflow runs automatically and produces:
-   - `petchain-stellar-release-vX.Y.Z.tar.gz`
-   - `petchain-stellar-release-vX.Y.Z-with-manifests.tar.gz`
+   - `healthy-lab-stellar-release-vX.Y.Z.tar.gz`
+   - `healthy-lab-stellar-release-vX.Y.Z-with-manifests.tar.gz`
    - `provenance.json` with full build metadata
    - `checksums.txt` with SHA-256 checksums of all artifacts

@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/DogStark/PetChain-Contracts/blob/main/stellar-contracts/simulation-fixtures.schema.json",
-  "title": "PetChain Simulation Fixtures",
+  "$id": "https://github.com/DogStark/healthy-lab/blob/main/stellar-contracts/simulation-fixtures.schema.json",
+  "title": "Healthy Lab Simulation Fixtures",
   "description": "Schema for deterministic transaction simulation fixtures used by client repositories for pre-signing UX.",
   "type": "object",
   "required": ["fixture_version", "simulations"],

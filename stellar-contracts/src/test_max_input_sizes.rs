@@ -34,8 +34,8 @@
 // ============================================================
 
 use crate::{
-    ActivityType, BehaviorType, Gender, Ingredient, Medication, PetChainContract,
-    PetChainContractClient, PrivacyLevel, Species,
+    ActivityType, BehaviorType, Gender, Ingredient, Medication, HealthyLabContract,
+    HealthyLabContractClient, PrivacyLevel, Species,
     MAX_BEHAVIOR_DESC_LEN, MAX_INGREDIENTS, MAX_LAB_REF_RANGES_LEN,
     MAX_LAB_RESULTS_LEN, MAX_LAB_TEST_TYPE_LEN, MAX_MEDICAL_DIAGNOSIS_LEN,
     MAX_MEDICAL_NOTES_LEN, MAX_MEDICAL_TREATMENT_LEN, MAX_MULTISIG_SIGNERS,
@@ -61,7 +61,7 @@ fn str_of_len(env: &Env, n: u32) -> String {
 }
 
 /// Register a pet for the owner.
-fn register_pet(client: &PetChainContractClient, env: &Env, owner: &Address, name: &str) -> u64 {
+fn register_pet(client: &HealthyLabContractClient, env: &Env, owner: &Address, name: &str) -> u64 {
     client.register_pet(
         owner,
         &String::from_str(env, name),
@@ -78,12 +78,12 @@ fn register_pet(client: &PetChainContractClient, env: &Env, owner: &Address, nam
 
 /// Shared harness: init admin, register a pet, register + verify a
 /// vet. Returns (client, admin, owner, vet, pet_id).
-fn setup() -> (Env, PetChainContractClient<'static>, Address, Address, Address, u64) {
+fn setup() -> (Env, HealthyLabContractClient<'static>, Address, Address, Address, u64) {
     let env = Env::default();
     env.mock_all_auths();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     client.init_admin(&admin);
@@ -103,11 +103,11 @@ fn setup() -> (Env, PetChainContractClient<'static>, Address, Address, Address, 
 }
 
 /// Same, but no verified vet (for register_vet-only tests).
-fn setup_admin() -> (Env, PetChainContractClient<'static>, Address) {
+fn setup_admin() -> (Env, HealthyLabContractClient<'static>, Address) {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let admin = Address::generate(&env);
     client.init_admin(&admin);
     (env, client, admin)
@@ -219,7 +219,7 @@ fn activity_notes_over_limit_rejected() {
 // add_medical_record : diagnosis / treatment / notes
 
 fn add_medical_record(
-    client: &PetChainContractClient,
+    client: &HealthyLabContractClient,
     env: &Env,
     pet_id: u64,
     vet: &Address,
@@ -300,7 +300,7 @@ fn medical_notes_over_limit_rejected() {
 // add_lab_result : test_type / results / reference_ranges
 
 fn add_lab(
-    client: &PetChainContractClient,
+    client: &HealthyLabContractClient,
     env: &Env,
     pet_id: u64,
     vet: &Address,
@@ -384,7 +384,7 @@ fn lab_reference_ranges_over_limit_rejected() {
 
 /// Register a pet with an explicit gender (breeding needs a sire + dam).
 fn register_pet_gender(
-    client: &PetChainContractClient,
+    client: &HealthyLabContractClient,
     env: &Env,
     owner: &Address,
     name: &str,
@@ -439,7 +439,7 @@ fn breeding_notes_over_limit_rejected() {
 #[test]
 fn vet_specialization_at_limit_accepted() {
     let (env, client, _admin) = setup_admin();
-    let max = PetChainContract::MAX_VET_SPEC_LEN;
+    let max = HealthyLabContract::MAX_VET_SPEC_LEN;
     let vet = Address::generate(&env);
     let ok = client.register_vet(
         &vet,
@@ -454,7 +454,7 @@ fn vet_specialization_at_limit_accepted() {
 #[should_panic(expected = "Error(Contract, #12)")]
 fn vet_specialization_over_limit_rejected() {
     let (env, client, _admin) = setup_admin();
-    let max = PetChainContract::MAX_VET_SPEC_LEN;
+    let max = HealthyLabContract::MAX_VET_SPEC_LEN;
     let vet = Address::generate(&env);
     client.register_vet(
         &vet,

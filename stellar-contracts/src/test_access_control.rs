@@ -8,14 +8,14 @@ mod test_access_control {
         env.mock_all_auths();
         env.budget().reset_unlimited();
 
-        let contract_id = env.register_contract(None, PetChainContract);
+        let contract_id = env.register_contract(None, HealthyLabContract);
 
         let owner = Address::generate(&env);
         let admin = Address::generate(&env);
         let vet = Address::generate(&env);
         let read_only = Address::generate(&env);
 
-        let client = PetChainContractClient::new(&env, &contract_id);
+        let client = HealthyLabContractClient::new(&env, &contract_id);
         let pet_id = client.register_pet(
             &owner,
             &String::from_str(&env, "Buddy"),
@@ -32,7 +32,7 @@ mod test_access_control {
     #[test]
     fn test_role_hierarchy_effective_permissions() {
         let (env, contract_id, owner, pet_id, admin, vet, read_only) = setup();
-        let client = PetChainContractClient::new(&env, &contract_id);
+        let client = HealthyLabContractClient::new(&env, &contract_id);
 
         client.grant_role(&pet_id, &owner, &admin, &Role::Admin);
         client.grant_role(&pet_id, &admin, &vet, &Role::Vet);
@@ -66,7 +66,7 @@ mod test_access_control {
     #[should_panic(expected = "Role exceeds caller authority")]
     fn test_role_grant_above_caller_level_rejected() {
         let (env, contract_id, owner, pet_id, admin, vet, _) = setup();
-        let client = PetChainContractClient::new(&env, &contract_id);
+        let client = HealthyLabContractClient::new(&env, &contract_id);
 
         client.grant_role(&pet_id, &owner, &admin, &Role::Admin);
         client.grant_role(&pet_id, &admin, &vet, &Role::Vet);
@@ -88,8 +88,8 @@ fn test_remove_pet_from_owner_index_missing_last_entry_does_not_panic() {
     // return early instead of panicking.
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let new_owner = Address::generate(&env);
@@ -141,8 +141,8 @@ fn test_remove_pet_from_owner_index_missing_last_entry_does_not_panic() {
 fn test_grant_access() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee = Address::generate(&env);
@@ -171,8 +171,8 @@ fn test_grant_access() {
 fn test_grant_access_with_expiry() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee = Address::generate(&env);
@@ -204,8 +204,8 @@ fn test_grant_access_with_expiry() {
 fn test_revoke_access() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee = Address::generate(&env);
@@ -237,8 +237,8 @@ fn test_revoke_access() {
 fn test_access_expiry() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee = Address::generate(&env);
@@ -278,7 +278,7 @@ fn test_access_expiry() {
 #[test]
 fn test_grant_access_repeated_calls_keep_one_canonical_index_entry() {
     let (env, contract_id, owner, pet_id, admin, _vet, _read_only) = setup();
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let grantee = admin;
 
     let nonce = client.get_caller_nonce(&owner);
@@ -326,8 +326,8 @@ fn test_grant_access_repeated_calls_keep_one_canonical_index_entry() {
 fn test_extend_access_grant_updates_expiry() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee = Address::generate(&env);
@@ -365,8 +365,8 @@ fn test_extend_access_grant_updates_expiry() {
 fn test_extend_access_grant_cannot_extend_revoked_grant() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee = Address::generate(&env);
@@ -401,8 +401,8 @@ fn test_extend_access_grant_cannot_extend_revoked_grant() {
 fn test_access_level_enforcement_basic() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee = Address::generate(&env);
@@ -430,8 +430,8 @@ fn test_access_level_enforcement_basic() {
 fn test_access_level_enforcement_full() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee = Address::generate(&env);
@@ -459,8 +459,8 @@ fn test_access_level_enforcement_full() {
 fn test_owner_has_full_access() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
 
@@ -485,8 +485,8 @@ fn test_owner_has_full_access() {
 fn test_get_authorized_users() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee1 = Address::generate(&env);
@@ -521,8 +521,8 @@ fn test_get_authorized_users() {
 fn test_get_authorized_users_excludes_revoked() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee1 = Address::generate(&env);
@@ -556,8 +556,8 @@ fn test_get_authorized_users_excludes_revoked() {
 fn test_revoke_all_access() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee1 = Address::generate(&env);
@@ -592,8 +592,8 @@ fn test_revoke_all_access() {
 fn test_get_authorized_users_excludes_expired() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee1 = Address::generate(&env);
@@ -631,8 +631,8 @@ fn test_get_authorized_users_excludes_expired() {
 fn test_get_pets_by_owner_single_owner_returns_only_owned_pets() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let other_owner = Address::generate(&env);
@@ -671,8 +671,8 @@ fn test_get_pets_by_owner_single_owner_returns_only_owned_pets() {
 fn test_get_pets_by_owner_multiple_pets_returns_in_index_order() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
 
@@ -724,8 +724,8 @@ fn test_get_pets_by_owner_multiple_pets_returns_in_index_order() {
 fn test_get_pets_by_owner_supports_pagination() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
 
@@ -779,8 +779,8 @@ fn test_get_pets_by_owner_supports_pagination() {
 fn test_get_access_grant() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee = Address::generate(&env);
@@ -816,8 +816,8 @@ fn test_get_access_grant() {
 fn test_get_all_access_grants_returns_all_grants_for_pet() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee1 = Address::generate(&env);
@@ -859,8 +859,8 @@ fn test_get_all_access_grants_returns_all_grants_for_pet() {
 fn test_get_all_access_grants_requires_owner_auth() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee = Address::generate(&env);
@@ -889,8 +889,8 @@ fn test_get_all_access_grants_requires_owner_auth() {
 fn test_multiple_access_levels() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let vet = Address::generate(&env);
@@ -924,8 +924,8 @@ fn test_multiple_access_levels() {
 fn test_no_access_by_default() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let stranger = Address::generate(&env);
@@ -951,8 +951,8 @@ fn test_no_access_by_default() {
 fn test_permanent_access() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee = Address::generate(&env);
@@ -986,8 +986,8 @@ fn test_permanent_access() {
 fn test_access_logs_are_capped() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let pet_id = client.register_pet(
@@ -1032,8 +1032,8 @@ fn test_access_logs_are_capped() {
 fn test_access_logs_retain_newest_entries() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let pet_id = client.register_pet(
@@ -1085,8 +1085,8 @@ fn test_access_logs_retain_newest_entries() {
 fn test_get_access_logs_unauthorized() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let stranger = Address::generate(&env);
@@ -1111,8 +1111,8 @@ fn test_get_access_logs_unauthorized() {
 fn test_get_vaccination_history_pagination_first_page() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let pet_id = client.register_pet(
@@ -1191,8 +1191,8 @@ fn test_get_vaccination_history_pagination_first_page() {
 fn test_get_vaccination_history_pagination_out_of_bounds_offset() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let pet_id = client.register_pet(
@@ -1243,8 +1243,8 @@ fn test_get_vaccination_history_pagination_out_of_bounds_offset() {
 fn test_get_vaccination_history_pagination_limit_zero() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let pet_id = client.register_pet(
@@ -1295,8 +1295,8 @@ fn test_get_vaccination_history_pagination_limit_zero() {
 fn test_get_verified_vets_only_returns_verified() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     client.init_admin(&admin);
@@ -1329,8 +1329,8 @@ fn test_get_verified_vets_only_returns_verified() {
 fn test_check_and_expire_access_marks_expired_grant_inactive() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee = Address::generate(&env);
@@ -1372,8 +1372,8 @@ fn test_check_and_expire_access_marks_expired_grant_inactive() {
 fn test_get_verified_vets_pagination() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     client.init_admin(&admin);
@@ -1403,8 +1403,8 @@ fn test_get_verified_vets_pagination() {
 fn test_check_and_expire_access_does_not_affect_active_grant() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     client.init_admin(&admin);
@@ -1443,8 +1443,8 @@ fn test_check_and_expire_access_does_not_affect_active_grant() {
 fn test_custody_history_multiple_updates() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let vet = Address::generate(&env);
     client.register_vet(
@@ -1498,8 +1498,8 @@ fn test_custody_history_multiple_updates() {
 fn test_custody_history_appended_correctly() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let custodian = Address::generate(&env);
@@ -1545,8 +1545,8 @@ fn test_custody_history_appended_correctly() {
 fn test_get_custody_history_returns_complete_history() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let custodian = Address::generate(&env);
@@ -1596,8 +1596,8 @@ fn test_get_custody_history_returns_complete_history() {
 fn test_is_vet_registered_distinguishes_from_unregistered() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let vet = Address::generate(&env);
     let unregistered_vet = Address::generate(&env);
@@ -1619,8 +1619,8 @@ fn test_is_vet_registered_distinguishes_from_unregistered() {
 fn test_get_vaccination_summary() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let admin = Address::generate(&env);
@@ -1686,8 +1686,8 @@ fn test_get_vaccination_summary() {
 fn test_get_all_access_grants_returns_all_grants() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee1 = Address::generate(&env);
@@ -1727,8 +1727,8 @@ fn test_get_all_access_grants_returns_all_grants() {
 fn test_get_all_access_grants_includes_revoked() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let grantee = Address::generate(&env);
@@ -1759,8 +1759,8 @@ fn test_get_all_access_grants_includes_revoked() {
 fn test_get_all_access_grants_empty_when_none_granted() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
 
@@ -1785,8 +1785,8 @@ fn test_get_all_access_grants_empty_when_none_granted() {
 fn test_get_all_access_grants_requires_owner() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
 
@@ -1811,8 +1811,8 @@ fn test_get_all_access_grants_requires_owner() {
 fn test_get_access_grant_returns_none_when_not_granted() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let stranger = Address::generate(&env);
@@ -1838,8 +1838,8 @@ fn test_get_access_grant_returns_none_when_not_granted() {
 fn test_get_access_log_paginated() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
     let grantee = Address::generate(&env);
     let pet_id = client.register_pet(
@@ -1871,8 +1871,8 @@ fn test_get_access_log_paginated() {
 fn test_expired_grant_returns_none() {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let owner = Address::generate(&env);
     let grantee = Address::generate(&env);
     let pet_id = client.register_pet(
@@ -1897,11 +1897,11 @@ fn test_expired_grant_returns_none() {
 
 // --- export_access_log tests ---
 
-fn setup_with_admin() -> (Env, PetChainContractClient<'static>, Address, Address, u64) {
+fn setup_with_admin() -> (Env, HealthyLabContractClient<'static>, Address, Address, u64) {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     client.init_admin(&admin);
@@ -1974,7 +1974,7 @@ fn test_export_access_log_admin_can_export() {
 
 fn setup_verified_vet_for_specialization() -> (
     Env,
-    PetChainContractClient<'static>,
+    HealthyLabContractClient<'static>,
     Address,
     Address,
     Address,
@@ -1982,8 +1982,8 @@ fn setup_verified_vet_for_specialization() -> (
 ) {
     let env = Env::default();
     env.mock_all_auths();
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     let owner = Address::generate(&env);

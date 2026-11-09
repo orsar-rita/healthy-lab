@@ -2,7 +2,7 @@
 
 ## Overview
 
-Every public event emitted by the PetChain contract includes a `version: u32` field
+Every public event emitted by the Healthy Lab contract includes a `version: u32` field
 set to the value of `EVENT_SCHEMA_VERSION` (currently **1**). This lets off-chain
 indexers detect schema evolution and apply migration logic without silently breaking.
 

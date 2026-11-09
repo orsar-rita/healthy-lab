@@ -8,7 +8,7 @@ const DAY: u64 = 86_400;
 
 struct TestContext {
     env: Env,
-    client: PetChainContractClient<'static>,
+    client: HealthyLabContractClient<'static>,
     admin: Address,
     vet1: Address,
     vet2: Address,
@@ -21,8 +21,8 @@ fn setup() -> TestContext {
     env.mock_all_auths();
     env.budget().reset_unlimited();
 
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let admin = Address::generate(&env);
     let owner = Address::generate(&env);
@@ -82,7 +82,7 @@ fn setup() -> TestContext {
 
 fn register_verified_vet(
     env: &Env,
-    client: &PetChainContractClient,
+    client: &HealthyLabContractClient,
     admin: &Address,
     vet: &Address,
     license: &str,
@@ -98,7 +98,7 @@ fn register_verified_vet(
 
 fn add_vaccination(
     env: &Env,
-    client: &PetChainContractClient,
+    client: &HealthyLabContractClient,
     pet_id: u64,
     vet: &Address,
     administered_at: u64,
@@ -118,7 +118,7 @@ fn add_vaccination(
 
 fn add_medical_record(
     env: &Env,
-    client: &PetChainContractClient,
+    client: &HealthyLabContractClient,
     pet_id: u64,
     vet: &Address,
 ) {

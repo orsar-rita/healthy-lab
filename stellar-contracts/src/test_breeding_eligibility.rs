@@ -1,6 +1,6 @@
 // Breeding eligibility, cooldown boundary and replay tests (Issue #1342).
 use crate::{
-    BreedingCheck, BreedingPolicy, ContractError, Gender, PetChainContract, PetChainContractClient,
+    BreedingCheck, BreedingPolicy, ContractError, Gender, HealthyLabContract, HealthyLabContractClient,
     PrivacyLevel, Species, DEFAULT_DAM_COOLDOWN_SECS, DEFAULT_MAX_COI_BP,
     DEFAULT_MIN_BREEDING_AGE_SECS, DEFAULT_SIRE_COOLDOWN_SECS,
 };
@@ -19,7 +19,7 @@ const ADULT: u64 = BIRTH + MIN_AGE;
 
 struct Ctx<'a> {
     env: Env,
-    client: PetChainContractClient<'a>,
+    client: HealthyLabContractClient<'a>,
     contract_id: Address,
     admin: Address,
     owner: Address,
@@ -30,8 +30,8 @@ fn setup<'a>() -> Ctx<'a> {
     env.mock_all_auths();
     env.budget().reset_unlimited();
     env.ledger().with_mut(|l| l.timestamp = NOW);
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
     let admin = Address::generate(&env);
     let owner = Address::generate(&env);
     client.init_admin(&admin);
@@ -133,7 +133,7 @@ fn eligible_mating_records_parent_and_cooldown_relationship() {
 #[test]
 fn default_policy_applies_when_unset() {
     let env = Env::default();
-    let client = PetChainContractClient::new(&env, &env.register_contract(None, PetChainContract));
+    let client = HealthyLabContractClient::new(&env, &env.register_contract(None, HealthyLabContract));
     let p = client.get_breeding_policy();
     assert_eq!(p.min_age_secs, DEFAULT_MIN_BREEDING_AGE_SECS);
     assert_eq!(p.sire_cooldown_secs, DEFAULT_SIRE_COOLDOWN_SECS);

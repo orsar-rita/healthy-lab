@@ -101,7 +101,7 @@ client and deployment tooling; they are validated in CI.
 {
   "network": "alfajores",
   "chainId": 44787,
-  "contract": "PetChainRegistry",
+  "contract": "HealthyLabRegistry",
   "address": "0xDeployedAddress",
   "bytecodeHash": "0x<keccak256 of deployed bytecode>",
   "compiler": { "version": "0.8.20", "optimizer": { "enabled": true, "runs": 200 } },
@@ -169,7 +169,7 @@ unknown, or stale inputs return `false` without writing state.
 
 ## Ownership transfer
 
-`PetChainRegistry` exposes an explicit ownership-transfer path so indexers can
+`HealthyLabRegistry` exposes an explicit ownership-transfer path so indexers can
 reconstruct an unambiguous owner history.
 
 ```solidity
@@ -196,7 +196,7 @@ Semantics:
 
 ### Tests
 
-`test/PetChainRegistry.test.js` covers the transfer path:
+`test/HealthyLabRegistry.test.js` covers the transfer path:
 
 - unauthorized callers revert and leave `owner()` unchanged;
 - transfers to `address(0)` and to the current owner revert;
@@ -206,7 +206,7 @@ Semantics:
 
 ## Reentrancy and external-call policy
 
-`PetChainRegistry` follows a strict checks-effects-interactions (CEI) policy.
+`HealthyLabRegistry` follows a strict checks-effects-interactions (CEI) policy.
 All state mutations (registration, ownership transfer, record writes) are
 committed **before** any external call is made, and no external call is allowed
 to re-enter a state-mutating entry point. Any future extension that adds a
@@ -257,7 +257,7 @@ fail if a protected path becomes reentrant.
   consumption) must never be emitted in an event. Only commitments, hashes, and
   public identifiers are emitted.
 
-Deploys `PetChainRegistry`, prints its address, and writes the chain-specific
+Deploys `HealthyLabRegistry`, prints its address, and writes the chain-specific
 deployment manifest to `deployments/<network>.json`.
 
 ### Indexed events
@@ -277,7 +277,7 @@ Representative old/new fixtures live under `celo-contracts/test/fixtures/`:
 - `events.v1.json` — the historical payload layout for each indexed event.
 - `events.v2.json` — the current payload layout, with additive fields only.
 
-Registers a sample pet against an already-deployed `PetChainRegistry`. The
+Registers a sample pet against an already-deployed `HealthyLabRegistry`. The
 contract address is read from the selected network's manifest
 (`deployments/<network>.json`); set `CONTRACT_ADDRESS` to override it. The
 script fails if the manifest is missing, stale, or bound to a different chain

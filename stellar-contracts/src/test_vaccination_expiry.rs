@@ -4,13 +4,13 @@ mod test_vaccination_expiry {
 
     const DAY: u64 = 86_400;
 
-    fn setup() -> (Env, PetChainContractClient<'static>, Address, Address, u64) {
+    fn setup() -> (Env, HealthyLabContractClient<'static>, Address, Address, u64) {
         let env = Env::default();
         env.mock_all_auths();
         env.budget().reset_unlimited();
 
-        let contract_id = env.register_contract(None, PetChainContract);
-        let client = PetChainContractClient::new(&env, &contract_id);
+        let contract_id = env.register_contract(None, HealthyLabContract);
+        let client = HealthyLabContractClient::new(&env, &contract_id);
 
         let admin = Address::generate(&env);
         let vet = Address::generate(&env);

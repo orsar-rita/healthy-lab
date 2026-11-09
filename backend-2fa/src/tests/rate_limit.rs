@@ -385,7 +385,7 @@ fn test_rate_limit_exhaustion_blocks_login() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "rate-limit-login@petchain.com".to_string(),
+            email: "rate-limit-login@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -450,7 +450,7 @@ fn test_successful_login_resets_rate_limit() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "reset-rate@petchain.com".to_string(),
+            email: "reset-rate@healthy-lab.example".to_string(),
         },
     )
     .unwrap();

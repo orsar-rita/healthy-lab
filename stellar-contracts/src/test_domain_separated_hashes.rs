@@ -1,6 +1,6 @@
 // Domain separation for every stored hash (Issue #1168).
 //
-// `PetChainContract::compute_domain_hash` is the canonical way to hash
+// `HealthyLabContract::compute_domain_hash` is the canonical way to hash
 // content bound for storage as a `BytesN<32>` (evidence, attachments,
 // claim documents, certificates, medical records, tag IDs). Each domain
 // gets its own versioned ASCII prefix -- `petchain:hash:<domain>:v1` --
@@ -11,12 +11,12 @@
 // (`sha256(tag + content)`) and are pinned here so any accidental change
 // to the tag strings, the prefixing order, or the hash algorithm is
 // caught immediately.
-use crate::{HashDomain, PetChainContract};
+use crate::{HashDomain, HealthyLabContract};
 use soroban_sdk::{Bytes, Env};
 
 fn vector(env: &Env, domain: HashDomain, expected: [u8; 32]) {
-    let content = Bytes::from_slice(env, b"hello-petchain");
-    let got = PetChainContract::compute_domain_hash(env.clone(), domain, content);
+    let content = Bytes::from_slice(env, b"hello-healthy-lab");
+    let got = HealthyLabContract::compute_domain_hash(env.clone(), domain, content);
     assert_eq!(got.to_array(), expected);
 }
 
@@ -121,7 +121,7 @@ fn test_domains_are_pairwise_distinct_for_same_content() {
 
     let mut hashes = soroban_sdk::Vec::new(&env);
     for domain in domains.iter() {
-        let h = PetChainContract::compute_domain_hash(env.clone(), domain.clone(), content.clone());
+        let h = HealthyLabContract::compute_domain_hash(env.clone(), domain.clone(), content.clone());
         for existing in hashes.iter() {
             assert_ne!(h, existing, "two distinct domains must never collide");
         }
@@ -134,12 +134,12 @@ fn test_domains_are_pairwise_distinct_for_same_content() {
 #[test]
 fn test_same_domain_different_content_differs() {
     let env = Env::default();
-    let a = PetChainContract::compute_domain_hash(
+    let a = HealthyLabContract::compute_domain_hash(
         env.clone(),
         HashDomain::Evidence,
         Bytes::from_slice(&env, b"content-a"),
     );
-    let b = PetChainContract::compute_domain_hash(
+    let b = HealthyLabContract::compute_domain_hash(
         env.clone(),
         HashDomain::Evidence,
         Bytes::from_slice(&env, b"content-b"),
@@ -151,12 +151,12 @@ fn test_same_domain_different_content_differs() {
 #[test]
 fn test_empty_content_is_deterministic() {
     let env = Env::default();
-    let a = PetChainContract::compute_domain_hash(
+    let a = HealthyLabContract::compute_domain_hash(
         env.clone(),
         HashDomain::Attachment,
         Bytes::new(&env),
     );
-    let b = PetChainContract::compute_domain_hash(
+    let b = HealthyLabContract::compute_domain_hash(
         env.clone(),
         HashDomain::Attachment,
         Bytes::new(&env),

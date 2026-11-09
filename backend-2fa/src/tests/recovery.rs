@@ -34,7 +34,7 @@ fn test_setup_with_default_backup_code_count() {
     // Default backup code count should be 8
     let config = TotpConfig::default();
     assert_eq!(config.backup_code_count, 8);
-    let result = TwoFactorAuth::setup_with_config("test@petchain.com", "PetChain", config.clone());
+    let result = TwoFactorAuth::setup_with_config("test@healthy-lab.example", "Healthy Lab", config.clone());
     assert!(result.is_ok());
     let setup = result.unwrap();
     assert_eq!(setup.backup_codes.len(), 8);
@@ -45,7 +45,7 @@ fn test_setup_with_custom_backup_code_count() {
     // Custom backup code count should be respected
     let mut config = TotpConfig::default();
     config.backup_code_count = 12;
-    let result = TwoFactorAuth::setup_with_config("test@petchain.com", "PetChain", config.clone());
+    let result = TwoFactorAuth::setup_with_config("test@healthy-lab.example", "Healthy Lab", config.clone());
     assert!(result.is_ok());
     let setup = result.unwrap();
     assert_eq!(setup.backup_codes.len(), 12);
@@ -76,7 +76,7 @@ fn test_verify_backup_code() {
 #[test]
 fn test_handlers_use_configurable_mock_store_for_enroll_verify_disable_recover() {
     let store = std::sync::Arc::new(MockTwoFactorStore::new());
-    let handlers = TwoFactorHandlers::with_store_and_issuer(store.clone(), "Pet Chain: Ops");
+    let handlers = TwoFactorHandlers::with_store_and_issuer(store.clone(), "Healthy Lab: Ops");
     let user_id = "mock-user";
 
     let enrollment = handlers
@@ -200,7 +200,7 @@ fn test_handler_recovery_invalid_code_returns_error() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "u8@petchain.com".to_string(),
+            email: "u8@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -235,7 +235,7 @@ fn test_handler_recovery_when_not_enabled_returns_error() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "u9@petchain.com".to_string(),
+            email: "u9@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -268,7 +268,7 @@ fn test_full_enable_recover_login_flow() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "recover@petchain.com".to_string(),
+            email: "recover@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -372,7 +372,7 @@ fn test_recovery_code_rotation_atomicity() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "rotation@petchain.com".to_string(),
+            email: "rotation@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -484,7 +484,7 @@ fn test_recovery_code_first_use_succeeds() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "user@petchain.com".to_string(),
+            email: "user@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -527,7 +527,7 @@ fn test_recovery_code_second_use_rejected() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "user@petchain.com".to_string(),
+            email: "user@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -583,7 +583,7 @@ fn test_recovery_log_entry_written() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "user@petchain.com".to_string(),
+            email: "user@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -639,7 +639,7 @@ fn test_recovery_log_pagination() {
             EnableTwoFactorRequest {
                 idempotency_key: None,
                 user_id: user_id.clone(),
-                email: format!("{}@petchain.com", user_id),
+                email: format!("{}@healthy-lab.example", user_id),
             },
         )
         .unwrap();
@@ -693,7 +693,7 @@ fn test_recovery_log_fields_correct() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "user@petchain.com".to_string(),
+            email: "user@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -745,7 +745,7 @@ fn test_recovery_all_backup_codes_exhausted() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "user@petchain.com".to_string(),
+            email: "user@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -834,7 +834,7 @@ fn test_upgrade_algorithm_new_backup_codes_generated() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "newcodes@petchain.com".to_string(),
+            email: "newcodes@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -885,7 +885,7 @@ fn test_upgrade_algorithm_old_secret_invalidated() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "invalid@petchain.com".to_string(),
+            email: "invalid@healthy-lab.example".to_string(),
         },
     )
     .unwrap();

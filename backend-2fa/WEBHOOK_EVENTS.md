@@ -98,7 +98,7 @@ manager.configure(
 ## Security Considerations
 
 - Webhook payloads are signed with HMAC-SHA256 using the configured signing secret
-- The signature is sent in the `X-PetChain-Signature` header
+- The signature is sent in the `X-Healthy Lab-Signature` header
 - Consumers should verify the signature to ensure payload authenticity
 - Metadata is sanitized to enforce size limits (max 25 entries, 2048 bytes total)
 

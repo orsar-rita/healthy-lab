@@ -721,7 +721,7 @@ fn test_create_canary_account() {
         &admin(),
         CreateCanaryRequest {
             user_id: "canary-001".to_string(),
-            email: "canary@petchain.com".to_string(),
+            email: "canary@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -742,7 +742,7 @@ fn test_canary_trigger_logs_event_with_ip() {
         &admin(),
         CreateCanaryRequest {
             user_id: "canary-002".to_string(),
-            email: "canary2@petchain.com".to_string(),
+            email: "canary2@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -777,7 +777,7 @@ fn test_canary_trigger_fires_webhook() {
         &admin(),
         CreateCanaryRequest {
             user_id: "canary-003".to_string(),
-            email: "canary3@petchain.com".to_string(),
+            email: "canary3@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -803,7 +803,7 @@ fn test_canary_excluded_from_normal_user_listing() {
         &admin(),
         CreateCanaryRequest {
             user_id: "canary-004".to_string(),
-            email: "canary4@petchain.com".to_string(),
+            email: "canary4@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -1695,7 +1695,7 @@ fn test_upgrade_algorithm_success() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "upgrade@petchain.com".to_string(),
+            email: "upgrade@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -1761,7 +1761,7 @@ fn test_upgrade_algorithm_wrong_token_rejected() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "upgrade2@petchain.com".to_string(),
+            email: "upgrade2@healthy-lab.example".to_string(),
         },
     )
     .unwrap();
@@ -1814,7 +1814,7 @@ fn test_upgrade_algorithm_already_on_sha256_returns_409() {
     };
 
     let setup =
-        TwoFactorAuth::setup_with_config("already@petchain.com", "PetChain", config).unwrap();
+        TwoFactorAuth::setup_with_config("already@healthy-lab.example", "Healthy Lab", config).unwrap();
 
     overwrite_two_factor_data_for_tests(
         user_id,
@@ -1868,7 +1868,7 @@ fn test_upgrade_algorithm_2fa_not_enabled() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "not-enabled@petchain.com".to_string(),
+            email: "not-enabled@healthy-lab.example".to_string(),
         },
     )
     .unwrap();

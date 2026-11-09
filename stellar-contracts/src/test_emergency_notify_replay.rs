@@ -13,7 +13,7 @@ const NOW: u64 = 1_800_000_000;
 
 struct Fixture {
     env: Env,
-    client: PetChainContractClient<'static>,
+    client: HealthyLabContractClient<'static>,
     owner: Address,
     pet_id: u64,
     contacts: Vec<EmergencyContact>,
@@ -30,7 +30,7 @@ fn contact(env: &Env, name: &str, phone: &str, email: &str, priority: u32) -> Em
     }
 }
 
-fn register_pet(env: &Env, client: &PetChainContractClient, owner: &Address) -> u64 {
+fn register_pet(env: &Env, client: &HealthyLabContractClient, owner: &Address) -> u64 {
     client.register_pet(
         owner,
         &String::from_str(env, "Buddy"),
@@ -49,8 +49,8 @@ fn setup() -> Fixture {
     let env = Env::default();
     env.mock_all_auths();
     env.ledger().with_mut(|l| l.timestamp = NOW);
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(&env, &contract_id);
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(&env, &contract_id);
 
     let owner = Address::generate(&env);
     let pet_id = register_pet(&env, &client, &owner);

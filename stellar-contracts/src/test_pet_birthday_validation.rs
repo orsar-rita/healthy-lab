@@ -1,12 +1,12 @@
-use crate::{Gender, PetChainContract, PetChainContractClient, PrivacyLevel, Species};
+use crate::{Gender, HealthyLabContract, HealthyLabContractClient, PrivacyLevel, Species};
 use soroban_sdk::{
     testutils::{Address as _, Ledger},
     Address, Env, String,
 };
 
-fn make_client(env: &Env) -> PetChainContractClient {
-    let contract_id = env.register_contract(None, PetChainContract);
-    let client = PetChainContractClient::new(env, &contract_id);
+fn make_client(env: &Env) -> HealthyLabContractClient {
+    let contract_id = env.register_contract(None, HealthyLabContract);
+    let client = HealthyLabContractClient::new(env, &contract_id);
     let admin = Address::generate(env);
     client.init_admin(&admin);
     client

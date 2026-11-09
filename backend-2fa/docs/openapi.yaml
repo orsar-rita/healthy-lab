@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: PetChain 2FA Service
+  title: Healthy Lab 2FA Service
   version: 1.0.0
   description: Multi-tenant two-factor authentication, leaderboard, and admin API.
 

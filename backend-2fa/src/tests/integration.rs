@@ -54,7 +54,7 @@ fn test_handler_enable_persists_disabled_state() {
         EnableTwoFactorRequest {
             idempotency_key: None,
             user_id: user_id.to_string(),
-            email: "u1@petchain.com".to_string(),
+            email: "u1@healthy-lab.example".to_string(),
         },
     );
     assert!(resp.is_ok());

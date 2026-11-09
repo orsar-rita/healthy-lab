@@ -11,18 +11,18 @@
 #[cfg(test)]
 mod test_multi_key_atomicity {
     use crate::{
-        AccessLevel, Gender, PetChainContract, PetChainContractClient, PrivacyLevel, Species,
+        AccessLevel, Gender, HealthyLabContract, HealthyLabContractClient, PrivacyLevel, Species,
     };
     use soroban_sdk::{testutils::Address as _, Address, Env, String, Vec};
 
-    fn setup(env: &Env) -> (PetChainContractClient<'_>, Address) {
+    fn setup(env: &Env) -> (HealthyLabContractClient<'_>, Address) {
         env.mock_all_auths();
-        let contract_id = env.register_contract(None, PetChainContract);
-        let client = PetChainContractClient::new(env, &contract_id);
+        let contract_id = env.register_contract(None, HealthyLabContract);
+        let client = HealthyLabContractClient::new(env, &contract_id);
         (client, contract_id)
     }
 
-    fn register(client: &PetChainContractClient, env: &Env, owner: &Address) -> u64 {
+    fn register(client: &HealthyLabContractClient, env: &Env, owner: &Address) -> u64 {
         client.register_pet(
             owner,
             &String::from_str(env, "Atom"),
@@ -50,7 +50,7 @@ mod test_multi_key_atomicity {
         // A first, valid registration to give us a known-good baseline.
         register(&client, &env, &owner);
         let total_before = client.get_total_pets();
-        let owner_count_before = PetChainContract::get_owner_pet_count(&env, &owner);
+        let owner_count_before = HealthyLabContract::get_owner_pet_count(&env, &owner);
 
         let result = client.try_register_pet(
             &owner,
@@ -73,7 +73,7 @@ mod test_multi_key_atomicity {
             "PetCount must be unchanged after a rejected registration"
         );
         assert_eq!(
-            PetChainContract::get_owner_pet_count(&env, &owner),
+            HealthyLabContract::get_owner_pet_count(&env, &owner),
             owner_count_before,
             "PetCountByOwner must be unchanged after a rejected registration"
         );
@@ -97,9 +97,9 @@ mod test_multi_key_atomicity {
         let pet_2 = register(&client, &env, &owner);
         let mismatched_pet = register(&client, &env, &other_owner);
 
-        let owner_count_before = PetChainContract::get_owner_pet_count(&env, &owner);
-        let other_count_before = PetChainContract::get_owner_pet_count(&env, &other_owner);
-        let new_owner_count_before = PetChainContract::get_owner_pet_count(&env, &new_owner);
+        let owner_count_before = HealthyLabContract::get_owner_pet_count(&env, &owner);
+        let other_count_before = HealthyLabContract::get_owner_pet_count(&env, &other_owner);
+        let new_owner_count_before = HealthyLabContract::get_owner_pet_count(&env, &new_owner);
 
         let mut pet_ids = Vec::new(&env);
         pet_ids.push_back(pet_1);
@@ -116,15 +116,15 @@ mod test_multi_key_atomicity {
         assert_eq!(client.get_pet_owner(&mismatched_pet).unwrap(), other_owner);
 
         assert_eq!(
-            PetChainContract::get_owner_pet_count(&env, &owner),
+            HealthyLabContract::get_owner_pet_count(&env, &owner),
             owner_count_before
         );
         assert_eq!(
-            PetChainContract::get_owner_pet_count(&env, &other_owner),
+            HealthyLabContract::get_owner_pet_count(&env, &other_owner),
             other_count_before
         );
         assert_eq!(
-            PetChainContract::get_owner_pet_count(&env, &new_owner),
+            HealthyLabContract::get_owner_pet_count(&env, &new_owner),
             new_owner_count_before
         );
     }

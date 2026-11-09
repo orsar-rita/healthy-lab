@@ -85,18 +85,18 @@ jobs:
       postgres:
         image: postgres:16
         env:
-          POSTGRES_USER: petchain
-          POSTGRES_PASSWORD: petchain
-          POSTGRES_DB: petchain_test
+          POSTGRES_USER: healthy_lab
+          POSTGRES_PASSWORD: healthy_lab
+          POSTGRES_DB: healthy_lab_test
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U petchain"
+          --health-cmd "pg_isready -U healthy_lab"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
     env:
-      DATABASE_URL: postgres://petchain:petchain@localhost:5432/petchain_test
+      DATABASE_URL: postgres://healthy_lab:healthy_lab@localhost:5432/healthy_lab_test
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions-rust-lang/setup-rust-toolchain@9399c7bb15d4c7d47b27263d024f0a4978346ba4 # v1.11.0
